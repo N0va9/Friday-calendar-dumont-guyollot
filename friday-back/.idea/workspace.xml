@@ -16,6 +16,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="JpbToolWindowState">
+    <option name="myId2FirstActivated">
+      <map>
+        <entry key="JPA Structure" value="true" />
+      </map>
+    </option>
+    <option name="myId2Visible">
+      <map>
+        <entry key="JPA Structure" value="true" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectId" id="1z0HxeYtwxEaxjgstREt0nNAjlx" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -40,7 +52,8 @@
       <option name="presentableId" value="Default" />
       <updated>1633278336453</updated>
       <workItem from="1633504328384" duration="56000" />
-      <workItem from="1633590071009" duration="1357000" />
+      <workItem from="1633590071009" duration="1721000" />
+      <workItem from="1633593632021" duration="693000" />
     </task>
     <servers />
   </component>
@@ -57,5 +70,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
