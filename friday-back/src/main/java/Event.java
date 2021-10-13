@@ -1,1 +1,1 @@
-public interface Event {}
+public sealed interface Event permits EventPersonal, EventIcalendar, EventGoogle{}
