@@ -4,6 +4,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,7 +15,7 @@ public class EventAdministrator {
 
     @GET
     @Path("/{type}")
-    public List<EventPersonal> getEventsListByType(@PathParam("type") EventsType type){
+    public List<Event> getEventsListByType(@PathParam("type") EventsType type){
         List<EventBuilder> eventsBuilder = EventBuilder.listAll();
         return eventsBuilder.stream().map(eventBuilder -> eventBuilder.build(type)).toList();
     }
@@ -24,11 +25,27 @@ public class EventAdministrator {
     @Transactional
     public Response addEvent(@PathParam("type") EventsType type, EventBuilder eventBuilder){
         Objects.requireNonNull(eventBuilder);
-        if(eventBuilder.eventTest()){
+        if(eventBuilder.eventTest() && type.equals(EventsType.PERSONAL)){
             eventBuilder.persist();
             return Response.status(Response.Status.CREATED).entity(eventBuilder).build();
         }
         return Response.status(Response.Status.NOT_ACCEPTABLE).entity(eventBuilder).build();
+    }
+
+    @POST
+    @Path("/{type}")
+    @Transactional
+    public Response synchronizedDatabase(@PathParam("type") EventsType type, EventBuilder[] eventBuilders){
+        var events = Arrays.stream(eventBuilders).toList();
+        if(!events.isEmpty() && !type.equals(EventsType.PERSONAL)){
+            events.forEach(event -> {
+                if(event.eventTest()){
+                    event.persist();
+                }
+            });
+            return Response.status(Response.Status.CREATED).entity(eventBuilders).build();
+        }
+        return Response.status(Response.Status.NOT_ACCEPTABLE).entity(eventBuilders).build();
     }
 
     @DELETE
