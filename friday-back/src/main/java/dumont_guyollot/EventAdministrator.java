@@ -7,20 +7,22 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Objects;
 
-@Path("/events/personal")
+@Path("/events")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class EventPersonalAdministrator {
+public class EventAdministrator {
 
     @GET
-    public List<EventPersonal> getEventPersonalList(){
+    @Path("/{type}")
+    public List<EventPersonal> getEventsListByType(@PathParam("type") EventsType type){
         List<EventBuilder> eventsBuilder = EventBuilder.listAll();
-        return eventsBuilder.stream().map(eventBuilder -> eventBuilder.build(EventsType.PERSONAL)).toList();
+        return eventsBuilder.stream().map(eventBuilder -> eventBuilder.build(type)).toList();
     }
 
     @POST
+    @Path("/{type}")
     @Transactional
-    public Response addEvent(EventBuilder eventBuilder){
+    public Response addEvent(@PathParam("type") EventsType type, EventBuilder eventBuilder){
         Objects.requireNonNull(eventBuilder);
         if(eventBuilder.eventTest()){
             eventBuilder.persist();
@@ -30,9 +32,9 @@ public class EventPersonalAdministrator {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/{type}/{id}")
     @Transactional
-    public Response deleteEventById(@PathParam("id") Long id){
+    public Response deleteEventById(@PathParam("type") EventsType type, @PathParam("id") Long id){
         EventBuilder event = EventBuilder.findById(id);
         if(event == null){
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(id).build();
@@ -42,9 +44,9 @@ public class EventPersonalAdministrator {
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("/{type}/{id}")
     @Transactional
-    public Response updateEventById(@PathParam("id") Long id, EventBuilder newEventBuilder){
+    public Response updateEventById(@PathParam("type") EventsType type, @PathParam("id") Long id, EventBuilder newEventBuilder){
         EventBuilder event = EventBuilder.findById(id);
         if(event == null){
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(id).build();
