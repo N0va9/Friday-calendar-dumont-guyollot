@@ -5,6 +5,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Objects;
 
 @Path("/events/personal")
 public class EventPersonalAdministrator {
@@ -20,7 +21,13 @@ public class EventPersonalAdministrator {
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
     public Response addEvent(EventBuilder eventBuilder){
-        eventBuilder.persist();
-        return Response.status(Response.Status.CREATED).entity(eventBuilder).build();
+        Objects.requireNonNull(eventBuilder);
+        if(eventBuilder.eventTest()){
+            eventBuilder.persist();
+            return Response.status(Response.Status.CREATED).entity(eventBuilder).build();
+        }
+        return Response.status(Response.Status.NOT_ACCEPTABLE).entity(eventBuilder).build();
     }
+
+
 }
