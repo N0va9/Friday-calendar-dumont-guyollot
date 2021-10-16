@@ -12,7 +12,7 @@ public class EventPersonalAdministrator {
     @Produces(MediaType.APPLICATION_JSON)
     public List<EventPersonal> eventBuilders(){
         List<EventBuilder> eventsBuilder = EventBuilder.listAll();
-        return eventsBuilder.stream().map(EventBuilder::build).toList();
+        return eventsBuilder.stream().map(eventBuilder -> eventBuilder.build(EventsType.PERSONAL)).toList();
     }
 
     @POST

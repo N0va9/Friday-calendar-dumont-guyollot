@@ -17,7 +17,11 @@ public class EventBuilder extends PanacheEntity {
     public String localisation;
     public String description;
 
-    public EventPersonal build(){
-        return new EventPersonal(id, title, dayStart, dayEnd, recurrence, timeStart, timeEnd, localisation, description);
+    public EventPersonal build(EventsType type){
+        return switch(type){
+            case PERSONAL -> new EventPersonal(id, title, dayStart, dayEnd, recurrence, timeStart, timeEnd, localisation, description);
+            case ICALENDAR -> null; //TODO
+            case GOOGLE -> null; //TODO
+        };
     }
 }
