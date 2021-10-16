@@ -12,5 +12,5 @@ public record EventPersonal(
         LocalTime timeStart,
         LocalTime timeEnd,
         String localisation,
-        String Description
+        String description
 ) implements Event {}
