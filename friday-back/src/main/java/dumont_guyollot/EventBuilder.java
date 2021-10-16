@@ -4,7 +4,9 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.Entity;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 @Entity
 public class EventBuilder extends PanacheEntity {
@@ -23,5 +25,12 @@ public class EventBuilder extends PanacheEntity {
             case ICALENDAR -> null; //TODO
             case GOOGLE -> null; //TODO
         };
+    }
+
+    public boolean eventTest(){
+        Objects.requireNonNull(this.title);
+        Objects.requireNonNull(this.dayStart);
+        Objects.requireNonNull(this.timeStart);
+        return !this.dayStart.atTime(this.timeStart).isBefore(LocalDateTime.now());
     }
 }
