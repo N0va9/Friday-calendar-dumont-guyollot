@@ -6,12 +6,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/database")
+@Path("/events/personal")
 public class EventPersonalAdministrator {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<EventBuilder> eventBuilders(){
-        return EventBuilder.listAll();
+    public List<EventPersonal> eventBuilders(){
+        List<EventBuilder> eventsBuilder = EventBuilder.listAll();
+        return eventsBuilder.stream().map(eventBuilder -> eventBuilder.build(EventsType.PERSONAL)).toList();
     }
 
     @POST
