@@ -40,4 +40,16 @@ public class EventPersonalAdministrator {
         event.delete();
         return Response.status(Response.Status.ACCEPTED).entity(id).build();
     }
+
+    @PUT
+    @Path("/{id}")
+    @Transactional
+    public Response updateEventById(@PathParam("id") Long id, EventBuilder newEventBuilder){
+        EventBuilder event = EventBuilder.findById(id);
+        if(event == null){
+            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(id).build();
+        }
+        event.title = newEventBuilder.title;
+        return Response.status(Response.Status.ACCEPTED).entity(id).build();
+    }
 }
