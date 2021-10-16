@@ -1,3 +1,3 @@
 package dumont_guyollot;
 
-public sealed interface Event permits EventPersonal, EventIcalendar { }
+public sealed interface Event permits EventPersonal, EventIcalendar, EventGoogle { }
