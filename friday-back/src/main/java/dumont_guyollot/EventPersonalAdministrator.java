@@ -13,7 +13,7 @@ import java.util.Objects;
 @Consumes(MediaType.APPLICATION_JSON)
 public class EventPersonalAdministrator {
     @GET
-    public List<EventPersonal> getEventsPersonalList(){
+    public List<EventPersonal> getEventsList(){
         List<EventPersonal> eventsPersonal = EventPersonal.listAll();
         return eventsPersonal.stream().toList();
     }
