@@ -21,7 +21,7 @@ public class EventBuilder extends PanacheEntity {
 
     public Event build(EventsType type){
         return switch(type){
-            case PERSONAL -> new EventPersonal(id, title, dayStart, dayEnd, recurrence, timeStart, timeEnd, localisation, description);
+            case PERSONAL -> null;
             case ICALENDAR -> new EventIcalendar(id, title, dayStart, dayEnd, recurrence, timeStart, timeEnd, localisation, description);
             case GOOGLE -> new EventGoogle(id, title, dayStart, dayEnd, recurrence, timeStart, timeEnd, localisation, description);
         };

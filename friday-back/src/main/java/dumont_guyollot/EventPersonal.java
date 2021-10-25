@@ -1,16 +1,25 @@
 package dumont_guyollot;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
-public record EventPersonal(
-        long id,
-        String title,
-        LocalDate dayStart,
-        LocalDate dayEnd,
-        String recurrence,
-        LocalTime timeStart,
-        LocalTime timeEnd,
-        String localisation,
-        String description
-) implements Event {}
+import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Objects;
+
+@Entity
+public class EventPersonal extends PanacheEntity {
+    @NotNull
+    public String title;
+    @NotNull
+    public LocalDate dayStart;
+    public LocalDate dayEnd;
+    public String recurrence;
+    @NotNull
+    public LocalTime timeStart;
+    public LocalTime timeEnd;
+    public String localisation;
+    public String description;
+}
