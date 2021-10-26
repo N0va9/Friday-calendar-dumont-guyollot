@@ -25,6 +25,7 @@ public class EventGoogleAdministrator {
         if (events.isEmpty()) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(eventsGoogle).build();
         }
+        EventGoogle.deleteAll();
         events.forEach(event -> {
             if(!event.dayStart.atTime(event.timeStart).isBefore(LocalDateTime.now())){
                 event.persist();
