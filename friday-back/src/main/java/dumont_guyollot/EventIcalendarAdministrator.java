@@ -25,6 +25,7 @@ public class EventIcalendarAdministrator {
         if(events.isEmpty()){
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(eventsIcalendar).build();
         }
+        EventIcalendar.deleteAll();
         events.forEach(event -> {
             if(!event.dayStart.atTime(event.timeStart).isBefore(LocalDateTime.now())){
                 event.persist();
