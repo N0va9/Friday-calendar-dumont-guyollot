@@ -27,13 +27,15 @@ class Calendar extends React.Component{
         if(this.props.eventsPersonal !== []){
             let d = this.state.currentDate;
             let tmp = [];
-            for(let i = 1; i <= this.getLastDate(); i++){
-                for(let j = 0; j < this.props.eventsPersonal.length; j++){
-                    let dayStart = new Date(this.props.eventsPersonal[j]['dayStart']);
-                    let dayEnd = new Date(this.props.eventsPersonal[j]['dayEnd']);
-                    if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear()) && (dayEnd.getFullYear() >= d.getFullYear() && i <= dayEnd.getDate())){
-                        tmp.push(i);
-                        break;
+            if(this.props.eventsPersonal !== undefined){
+                for(let i = 1; i <= this.getLastDate(); i++){
+                    for(let j = 0; j < this.props.eventsPersonal.length; j++){
+                        let dayStart = new Date(this.props.eventsPersonal[j]['dayStart']);
+                        let dayEnd = new Date(this.props.eventsPersonal[j]['dayEnd']);
+                        if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear()) && (dayEnd.getFullYear() >= d.getFullYear() && i <= dayEnd.getDate())){
+                            tmp.push(i);
+                            break;
+                        }
                     }
                 }
             }
