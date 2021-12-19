@@ -1,49 +1,48 @@
 import React from 'react';
 import DayCard from "./DayCard";
+import CurrentMonthAndYear from './CurrentMonthYear';
 
 class Calendar extends React.Component{
 
-    currentMonthAndYear = () => {
+    state = {
+        currentDate : new Date(),
+        days : []
+    }
+
+    getLastDate = () => {
         let d = new Date();
-        switch(d.getMonth()) {
-            case 0 :
-                return (<h4 className='display-6 text-center border-top border-3 p-3'>Janvier {d.getFullYear()}</h4>);
-            case 1 :
-                return (<h4 className='display-6 text-center border-top border-3 p-3'>Février {d.getFullYear()}</h4>);
-            case 2 :
-                return (<h4 className='display-6 text-center border-top border-3 p-3'>Mars {d.getFullYear()}</h4>);
-            case 3 :
-                return (<h4 className='display-6 text-center border-top border-3 p-3'>Avril {d.getFullYear()}</h4>);
-            case 4 :
-                return (<h4 className='display-6 text-center border-top border-3 p-3'>Mai {d.getFullYear()}</h4>);
-            case 5 :
-                return (<h4 className='display-6 text-center border-top border-3 p-3'>Juin {d.getFullYear()}</h4>);
-            case 6 :
-                return (<h4 className='display-6 text-center border-top border-3 p-3'>Juillet {d.getFullYear()}</h4>);
-            case 7 :
-                return (<h4 className='display-6 text-center border-top border-3 p-3'>Aout {d.getFullYear()}</h4>);
-            case 8 :
-                return (<h4 className='display-6 text-center border-top border-3 p-3'>Septembre {d.getFullYear()}</h4>);
-            case 9 :
-                return (<h4 className='display-6 text-center border-top border-3 p-3'>Octobre {d.getFullYear()}</h4>);
-            case 10 :
-                return (<h4 className='display-6 text-center border-top border-3 p-3'>Novembre {d.getFullYear()}</h4>);
-            case 11 :
-                return (<h4 className='display-6 text-center border-top border-3 p-3'>Décembre {d.getFullYear()}</h4>);
-            default :
-                return (<h4 className='display-6 text-center border-top border-3 p-3'>A new month is born {d.getFullYear()}</h4>);
+        d.setFullYear(this.state.currentDate.getFullYear() + 1);
+        d.setMonth((this.state.currentDate.getMonth() + 1) % 12);
+        d.setDate(0);
+        return d.getDate();
+    }
+
+    getFirstDay = () => {
+        let d = new Date();
+        d.setDate(1);
+        return d.getDay();
+    }
+
+    daysWithEvents = () => {
+        if(this.props.eventsPersonal !== []){
+            let d = this.state.currentDate;
+            let tmp = [];
+            for(let i = 1; i <= this.getLastDate(); i++){
+                for(let j = 0; j < this.props.eventsPersonal.length; j++){
+                    let dayStart = new Date(this.props.eventsPersonal[j]['dayStart']);
+                    let dayEnd = new Date(this.props.eventsPersonal[j]['dayEnd']);
+                    if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear()) && (dayEnd.getFullYear() >= d.getFullYear() && i <= dayEnd.getDate())){
+                        tmp.push(i);
+                        break;
+                    }
+                }
+            }
+            return tmp;
         }
-    };
+    }
 
     generateCalendar = () => {
-        let d = new Date();
-        let m = d.getMonth();
-        let y = d.getFullYear();
-        d.setDate(1);
-        let firstDay = d.getDay();
-        d.setFullYear(y + 1);
-        d.setMonth((m + 1) % 12);
-        d.setDate(0);
+        let firstDay = this.getFirstDay();
         let calendarDays = [];
         let week = [];
         if(firstDay !== 0){
@@ -54,17 +53,10 @@ class Calendar extends React.Component{
             }
         }
         let i = 1;
-        while(i <= d.getDate()){
-            let event = false;
-            /*for(let j = 0; j < this.props.eventsPersonal[0].length; j++){
-                let dayStart = new Date(this.props.eventsPersonal[0][j]['dayStart']);
-                let dayEnd = new Date(this.props.eventsPersonal[0][j]['dayEnd']);
-                if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear()) && (dayEnd.getFullYear() >= d.getFullYear() && i <= dayEnd.getDate())){
-                    event = true;
-                    break;
-                }
-            }*/
-            week.push(<DayCard date={i} event={event} key={i} inMonth={true}/>);
+        let last = this.getLastDate();
+        let daysWithEvents = this.daysWithEvents();
+        while(i <= last){
+            week.push(<DayCard date={i} event={daysWithEvents.includes(i)} key={i} inMonth={true}/>);
             if(week.length % 7 === 0){
                 calendarDays.push(week);
                 week = [];
@@ -84,7 +76,7 @@ class Calendar extends React.Component{
         let i = 0;
         return(
             <div>
-                {this.currentMonthAndYear()}
+                <CurrentMonthAndYear currentDate = {this.state.currentDate}/>
                 <div className='row d-none d-sm-none d-lg-flex p-1 bg-dark text-warning'>
                     <h5 className="col-sm p-1 text-center">Dimanche</h5>
                     <h5 className="col-sm p-1 text-center">Lundi</h5>
