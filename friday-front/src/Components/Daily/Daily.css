@@ -1,0 +1,14 @@
+/* scrollbar width */
+.custom-scrollbar-css::-webkit-scrollbar {
+    height: 1vw;
+  }
+  
+  /* scrollbar track */
+  .custom-scrollbar-css::-webkit-scrollbar-track {
+    background: #eee;
+  }
+  
+  /* scrollbar handle */
+  .custom-scrollbar-css::-webkit-scrollbar-thumb {
+    background-color: #ffc107;
+  }

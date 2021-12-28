@@ -4,15 +4,10 @@ import CurrentMonthAndYear from './CurrentMonthYear';
 
 class Calendar extends React.Component{
 
-    state = {
-        currentDate : new Date(),
-        days : []
-    }
-
     getLastDate = () => {
         let d = new Date();
-        d.setFullYear(this.state.currentDate.getFullYear() + 1);
-        d.setMonth((this.state.currentDate.getMonth() + 1) % 12);
+        d.setFullYear(this.props.currentDate.getFullYear() + 1);
+        d.setMonth((this.props.currentDate.getMonth() + 1) % 12);
         d.setDate(0);
         return d.getDate();
     }
@@ -25,7 +20,7 @@ class Calendar extends React.Component{
 
     daysWithEvents = () => {
         if(this.props.eventsPersonal !== []){
-            let d = this.state.currentDate;
+            let d = this.props.currentDate;
             let tmp = [];
             if(this.props.eventsPersonal !== undefined){
                 for(let i = 1; i <= this.getLastDate(); i++){
@@ -78,7 +73,7 @@ class Calendar extends React.Component{
         let i = 0;
         return(
             <div>
-                <CurrentMonthAndYear currentDate = {this.state.currentDate}/>
+                <CurrentMonthAndYear currentDate = {this.props.currentDate}/>
                 <div className='row d-none d-sm-none d-lg-flex p-1 bg-dark text-warning'>
                     <h5 className="col-sm p-1 text-center">Dimanche</h5>
                     <h5 className="col-sm p-1 text-center">Lundi</h5>
