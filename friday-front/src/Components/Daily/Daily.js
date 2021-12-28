@@ -15,8 +15,8 @@ export default class Daily extends React.Component{
 
     render(){
         let i = 0;
-        let events = this.generateCardGroup();
-        if(events.length === 0){
+        let allEvents = this.generateCardGroup();
+        if(allEvents.length === 0){
             return(
                 <div>
                     <CurrentDate currentDate={new Date()}/>
@@ -28,7 +28,7 @@ export default class Daily extends React.Component{
                 <div>
                     <CurrentDate currentDate={new Date()}/>
                     <div className="row overflow-auto flex-row flex-nowrap pb-3 custom-scrollbar-css d-none d-md-none d-lg-flex" >
-                        {events.map(e => {
+                        {allEvents.map(e => {
                             return(
                                 <div className="col-lg-3" key={i++}>
                                     <EventCard zevent={e}/>
@@ -37,7 +37,7 @@ export default class Daily extends React.Component{
                         })}
                     </div>
                     <div className="d-lg-none">
-                        {events.map(e => {
+                        {allEvents.map(e => {
                             return(
                                 <div className="col-lg-3" key={i++}>
                                     <EventCard zevent={e}/>
