@@ -1,6 +1,5 @@
 import React from 'react';
 import DayCard from "./DayCard";
-import CurrentMonthAndYear from './CurrentMonthYear';
 
 class Calendar extends React.Component{
     getLastDate = () => {
@@ -68,26 +67,42 @@ class Calendar extends React.Component{
         return calendarDays;
     }
 
-    render() {
-        let i = 0;
+
+
+    headerCalendar = () => {
         const days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-        return (
-            <div> 
-                <div className='row d-none d-sm-none d-lg-flex p-1 bg-dark text-warning'>
-                    {days.map((element, e) => {
-                        return (<h5 className="col-sm p-1 text-center">{element}</h5>)
-                    })}
-                </div>
-                {this.generateCalendar().map(week => {
-                    return(
-                        <div className='row' key={i++}>
-                            {week}
-                        </div>
-                    );
+        return(
+            <div className='row d-none d-sm-none d-lg-flex p-1 bg-dark text-warning'>
+                {days.map((element, e) => {
+                    return (<h5 className="col-sm p-1 text-center">{element}</h5>)
                 })}
             </div>
         );
     }
+
+    buildCalendar = () => {
+        let i = 0;
+        return(
+            <div>
+                {this.generateCalendar().map(week => {
+                    return(<div className='row' key={i++}>{week}</div>);
+                })}
+            </div>
+        );
+    }
+
+    drawCalendar = () => { return(
+            <div>
+                {this.headerCalendar()}
+                {this.buildCalendar()}
+            </div>
+    ) ;}
+
+    render() { return(
+            <div>
+                {this.drawCalendar()}
+            </div>
+    ); }
 }
 
 export default Calendar;
