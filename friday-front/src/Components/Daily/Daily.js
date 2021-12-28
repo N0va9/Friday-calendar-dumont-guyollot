@@ -18,10 +18,19 @@ export default class Daily extends React.Component{
         return(
             <div>
                 <CurrentDate currentDate={new Date()}/>
-                <div className="row overflow-auto flex-row flex-nowrap pb-3 custom-scrollbar-css" >
+                <div className="row overflow-auto flex-row flex-nowrap pb-3 custom-scrollbar-css d-none d-md-none d-lg-flex" >
                     {this.generateCardGroup().map(e => {
                         return(
-                            <div className="col-3" key={i++}>
+                            <div className="col-lg-3" key={i++}>
+                                <EventCard zevent={e}/>
+                            </div>
+                        );
+                    })}
+                </div>
+                <div className="d-lg-none">
+                    {this.generateCardGroup().map(e => {
+                        return(
+                            <div className="col-lg-3" key={i++}>
                                 <EventCard zevent={e}/>
                             </div>
                         );
