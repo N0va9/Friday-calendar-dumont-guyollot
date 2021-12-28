@@ -4,23 +4,27 @@ import Calendar from "./Components/Calendar/Calendar";
 class App extends React.Component{
 
   state = {
-    eventsPersonal : [],
+    personal : [],
+    icalendar : [],
+    google : [],
     proxyGood : 0,
   }
 
   componentDidMount = () => {
-    this.personalFetch();
+    this.fetchBase("personal");
+    this.fetchBase("icalendar");
+    this.fetchBase("google");
   }
 
-  personalFetch = () => {
-    fetch("/personal").then(response => {
+  fetchBase = (base) => {
+    fetch("/"+base).then(response => {
       if(response.ok === true){
         return response.json();
       } else {
         this.setState({proxyGood : response.status});
       }
     }).then(respJ => {
-      this.setState({eventsPersonal: respJ});
+      this.setState({[base] : respJ});
     });
   }
   
@@ -29,7 +33,7 @@ class App extends React.Component{
       return (
         <div className="App container">
           <h1 className="text-center mt-2 mb-2"><span className="text-black">Hello, I</span><span className="text-warning"> am Friday !</span></h1>
-          <Calendar eventsPersonal={this.state.eventsPersonal}/>
+          <Calendar eventsPersonal={[...this.state.personal, ...this.state.google, ...this.state.icalendar]}/>
         </div>
       );
     } else if(this.state.proxyGood === 500) {
