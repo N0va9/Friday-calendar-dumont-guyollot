@@ -1,5 +1,6 @@
 import React from "react";
 import Calendar from "./Components/Calendar/Calendar";
+import Daily from "./Components/Daily/Daily";
 
 class App extends React.Component{
 
@@ -8,6 +9,7 @@ class App extends React.Component{
     icalendar : [],
     google : [],
     proxyGood : 0,
+    currentDate: new Date()
   }
 
   componentDidMount = () => {
@@ -27,13 +29,24 @@ class App extends React.Component{
       this.setState({[base] : respJ});
     });
   }
+
+  generateDailyEvents = () => {
+    let tmp = [];
+    [...this.state.personal, ...this.state.google, ...this.state.icalendar].forEach(e => {
+      if(new Date(e['dayStart']).toDateString() === this.state.currentDate.toDateString()){
+        tmp.push(e);
+      }
+    });
+    return tmp;
+  }
   
   render(){
     if(this.state.proxyGood === 0){
       return (
         <div className="App container">
           <h1 className="text-center mt-2 mb-2"><span className="text-black">Hello, I</span><span className="text-warning"> am Friday !</span></h1>
-          <Calendar eventsPersonal={[...this.state.personal, ...this.state.google, ...this.state.icalendar]}/>
+          <Daily events={this.generateDailyEvents()} />
+          <Calendar eventsPersonal={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
         </div>
       );
     } else if(this.state.proxyGood === 500) {
