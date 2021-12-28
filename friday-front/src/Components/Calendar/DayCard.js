@@ -3,31 +3,22 @@ import React from 'react';
 class DayCard extends React.Component{
 
     events = (event) => {
-        if(event === true){
-            return(
-                <span className="badge rounded-0 bg-warning ps-5 pe-5"><span className='visually-hidden'>Primary</span></span>
-            );
-        } else {
-            return(
-                <span className="badge rounded-0 bg-dark ps-5 pe-5"><span className='visually-hidden'>Primary</span></span>
-            );
-        }
+        return (
+            <span className={this.checkClassName("badge rounded-0 ps-5 pe-5 ", "bg-warning", "bg-dark", event)}><span className='visually-hidden'>Primary</span></span>
+        );
     };
 
+    checkClassName = (str, str1, str2, bool) => {
+        let ns = (bool) ? str1 : str2;
+        return str + ns;
+    } 
+
     dayOfTheMonth = (inMonth) => {
-        if(inMonth === true){
-            return(
-                <h4 className="col-1 text-dark">
-                    {this.props.date}
-                </h4>
-            );
-        } else {
-            return(
-                <h4 className="col-1 text-danger">
-                    {this.props.date}
-                </h4>
-            );
-        }
+        return(
+            <h4 className={this.checkClassName("col-1 text-", "dark", "danger")}>
+                {this.props.date}
+            </h4>
+        );
     }
 
     render(){

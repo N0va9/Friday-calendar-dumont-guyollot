@@ -3,7 +3,6 @@ import DayCard from "./DayCard";
 import CurrentMonthAndYear from './CurrentMonthYear';
 
 class Calendar extends React.Component{
-
     getLastDate = () => {
         let d = new Date();
         d.setFullYear(this.props.currentDate.getFullYear() + 1);
@@ -69,19 +68,15 @@ class Calendar extends React.Component{
         return calendarDays;
     }
 
-    render(){
+    render() {
         let i = 0;
-        return(
-            <div>
-                <CurrentMonthAndYear currentDate = {this.props.currentDate}/>
+        const days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+        return (
+            <div> 
                 <div className='row d-none d-sm-none d-lg-flex p-1 bg-dark text-warning'>
-                    <h5 className="col-sm p-1 text-center">Dimanche</h5>
-                    <h5 className="col-sm p-1 text-center">Lundi</h5>
-                    <h5 className="col-sm p-1 text-center">Mardi</h5>
-                    <h5 className="col-sm p-1 text-center">Mercredi</h5>
-                    <h5 className="col-sm p-1 text-center">Jeudi</h5>
-                    <h5 className="col-sm p-1 text-center">Vendredi</h5>
-                    <h5 className="col-sm p-1 text-center">Samedi</h5>
+                    {days.map((element, e) => {
+                        return (<h5 className="col-sm p-1 text-center">{element}</h5>)
+                    })}
                 </div>
                 {this.generateCalendar().map(week => {
                     return(
