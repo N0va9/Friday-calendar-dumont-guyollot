@@ -15,28 +15,38 @@ export default class Daily extends React.Component{
 
     render(){
         let i = 0;
-        return(
-            <div>
-                <CurrentDate currentDate={new Date()}/>
-                <div className="row overflow-auto flex-row flex-nowrap pb-3 custom-scrollbar-css d-none d-md-none d-lg-flex" >
-                    {this.generateCardGroup().map(e => {
-                        return(
-                            <div className="col-lg-3" key={i++}>
-                                <EventCard zevent={e}/>
-                            </div>
-                        );
-                    })}
+        let events = this.generateCardGroup();
+        if(events.length === 0){
+            return(
+                <div>
+                    <CurrentDate currentDate={new Date()}/>
+                    <h5 className="display-6 text-center p-3 mt-3">Pas d'évènements aujourd'hui !</h5>
                 </div>
-                <div className="d-lg-none">
-                    {this.generateCardGroup().map(e => {
-                        return(
-                            <div className="col-lg-3" key={i++}>
-                                <EventCard zevent={e}/>
-                            </div>
-                        );
-                    })}
+            );
+        } else {
+            return(
+                <div>
+                    <CurrentDate currentDate={new Date()}/>
+                    <div className="row overflow-auto flex-row flex-nowrap pb-3 custom-scrollbar-css d-none d-md-none d-lg-flex" >
+                        {this.generateCardGroup().map(e => {
+                            return(
+                                <div className="col-lg-3" key={i++}>
+                                    <EventCard zevent={e}/>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <div className="d-lg-none">
+                        {this.generateCardGroup().map(e => {
+                            return(
+                                <div className="col-lg-3" key={i++}>
+                                    <EventCard zevent={e}/>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }
 }
