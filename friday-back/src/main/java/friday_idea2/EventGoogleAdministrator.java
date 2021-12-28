@@ -1,4 +1,4 @@
-package dumont_guyollot;
+package friday_idea2;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -15,6 +15,7 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
+
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -31,10 +32,12 @@ import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 
+
+
 @Path("/google")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class EventGoogleAdministrator {
+public class EventGoogleAdministrator extends friday_idea2.Event {
 
     private static final String APPLICATION_NAME = "Friday";
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
@@ -58,12 +61,6 @@ public class EventGoogleAdministrator {
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
         //returns an authorized Credential object.
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
-    }
-
-    @GET
-    public List<EventGoogle> getEventsList(){
-        List<EventGoogle> eventsGoogle = EventGoogle.listAll();
-        return eventsGoogle.stream().toList();
     }
 
     @POST
@@ -112,27 +109,4 @@ public class EventGoogleAdministrator {
         return Response.status(Response.Status.CREATED).build();
     }
 
-    @DELETE
-    @Path("/{id}")
-    @Transactional
-    public Response deleteEventById(@PathParam("id") Long id){
-        EventGoogle event = EventGoogle.findById(id);
-        if(event == null){
-            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(id).build();
-        }
-        event.delete();
-        return Response.status(Response.Status.ACCEPTED).entity(id).build();
-    }
-
-    @PUT
-    @Path("/{id}")
-    @Transactional
-    public Response updateEventById(@PathParam("id") Long id, EventGoogle newEventGoogle){
-        EventGoogle event = EventGoogle.findById(id);
-        if(event == null){
-            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(id).build();
-        }
-        event.title = newEventGoogle.title;
-        return Response.status(Response.Status.ACCEPTED).entity(id).build();
-    }
 }
