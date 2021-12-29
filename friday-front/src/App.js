@@ -1,6 +1,7 @@
 import React from "react";
 import Calendar from "./Components/Calendar/Calendar";
 import Daily from "./Components/Daily/Daily";
+import Buttons from "./Components/Actions/Buttons";
 
 class App extends React.Component{
 
@@ -46,6 +47,7 @@ class App extends React.Component{
         <div className="App container">
           <h1 className="text-center mt-2 mb-2"><span className="text-black">Hello, I</span><span className="text-warning"> am Friday !</span></h1>
           <Daily events={this.generateDailyEvents()} />
+          <Buttons />
           <Calendar eventsPersonal={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
         </div>
       );

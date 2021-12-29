@@ -8,6 +8,7 @@ import 'fontawesome-free/js/brands.js';
 import 'fontawesome-free/js/solid.js';
 import 'fontawesome-free/js/fontawesome.js';
 
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
