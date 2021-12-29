@@ -50,7 +50,7 @@ class App extends React.Component{
       <div className="App container">
         <h1 className="text-center mt-2 mb-2"><span className="text-black">Hello, I</span><span className="text-warning"> am Friday !</span></h1>
         {/* <NextEvent nextEvent={this./> */}
-        <Daily events={this.generateDailyEvents()} />
+        <Daily events={this.generateDailyEvents() } currentDate={this.state.currentDate} />
         <Calendar eventsPersonal={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
       </div>
   );}

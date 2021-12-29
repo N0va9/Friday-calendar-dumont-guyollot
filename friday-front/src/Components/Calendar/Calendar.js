@@ -1,5 +1,7 @@
 import React from 'react';
 import DayCard from "./DayCard";
+import CurrentMonthAndYear from './CurrentMonthYear';
+import { DAYS } from '../../Const';
 
 class Calendar extends React.Component{
     //Savoir si le mois actuel finit par un 28, 30 ou 31
@@ -71,11 +73,10 @@ class Calendar extends React.Component{
         return calendarDays;
     }
 
-    headerCalendar = () => {
-        const days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-        return(
+    headerCalendar = () => { return(
             <div className='row d-none d-sm-none d-lg-flex p-1 bg-dark text-warning'>
-                {days.map((element, e) => {
+                <CurrentMonthAndYear currentDate = {this.props.currentDate}/>
+                {DAYS.map((element, e) => {
                     return (<h5 className="col-sm p-1 text-center">{element}</h5>)
                 })}
             </div>
