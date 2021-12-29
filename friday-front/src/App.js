@@ -53,6 +53,28 @@ class App extends React.Component{
     });
   }
 
+  postIcalendar = (type, obj) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify(obj);
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    fetch("/icalendar/"+type, requestOptions).then((res) => {
+      switch(res.status.valueOf()){
+        case 406 :
+          alert("Not Acceptable icalendar !");
+          break;
+        default :
+          this.getBase("icalendar");
+          break;
+      }
+    });
+  }
+
   generateDailyEvents = () => {
     let tmp = [];
     [...this.state.personal, ...this.state.google, ...this.state.icalendar].forEach(e => {
@@ -69,7 +91,7 @@ class App extends React.Component{
         <div className="App container">
           <h1 className="text-center mt-2 mb-2"><span className="text-black">Hello, I</span><span className="text-warning"> am Friday !</span></h1>
           <Daily events={this.generateDailyEvents()} currentDate={this.state.currentDate}/>
-          <Buttons postPersonal={this.postPersonal}/>
+          <Buttons postPersonal={this.postPersonal} postIcalendar={this.postIcalendar}/>
           <Calendar events={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
         </div>
       );
