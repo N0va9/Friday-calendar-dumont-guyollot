@@ -67,7 +67,7 @@ class App extends React.Component{
       return (
         <div className="App container">
           <h1 className="text-center mt-2 mb-2"><span className="text-black">Hello, I</span><span className="text-warning"> am Friday !</span></h1>
-          <Daily events={this.generateDailyEvents()} />
+          <Daily events={this.generateDailyEvents()} currentDate={this.state.currentDate}/>
           <Buttons />
           <Calendar events={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
         </div>
