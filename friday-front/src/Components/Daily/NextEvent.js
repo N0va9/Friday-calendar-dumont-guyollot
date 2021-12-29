@@ -1,5 +1,4 @@
 import React from "react";
-import './NextEvent.css';
 import currentDate from "./CurrentDate";
 
 class NextEvent extends React.Component {

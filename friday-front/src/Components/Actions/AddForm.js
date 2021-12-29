@@ -1,5 +1,7 @@
 import React from "react";
-
+import "./AddForm.css"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default class AddForm extends React.Component{
 
@@ -42,6 +44,14 @@ export default class AddForm extends React.Component{
         this.setState({[event.currentTarget.id]: value});
     }
 
+    checkRequiredFields = () => {
+        return (this.state.title === '' || this.state.dayStart === '' || this.state.dayEnd === '' || this.state.timeStart === '' || this.state.timeEnd === '');
+    }
+
+    checkForm = () => {
+        (!this.checkRequiredFields()) ? toast.success("L'event "+ this.state.title +" a bien été crée") : toast.warn("Veuillez remplir tous les champs requis");
+    }
+
     render(){
         return(
             <div className="offcanvas offcanvas-start" tabIndex={-1} id="AddEvent" aria-labelledby="AddEventLabel">
@@ -53,23 +63,23 @@ export default class AddForm extends React.Component{
                     <form className="form form-control border-0" onSubmit={this.handleSubmit}>
                         <div className="input-group mb-3">
                             <span className="input-group-text p-3 bg-dark text-warning" id="basic-addon1"><i className="fa fa-heading"></i></span>
-                            <input type="text" className="form-control" placeholder="Titre" value={this.state.title} onChange={this.handleChange} aria-label="title" id="title" aria-describedby="basic-addon1"/>
+                            <input type="text" className="form-control" placeholder="Titre" value={this.state.title} onChange={this.handleChange} aria-label="title" id="title" aria-describedby="basic-addon1" required pattern="[^ ][a-zA-Z0-9 /-\()_]*"/>
                         </div>
                         <div className="input-group mb-3">
                             <span className="input-group-text p-3 bg-dark text-warning" id="basic-addon1"><i className="fa fa-calendar-plus"></i></span>
-                            <input type="date" className="form-control" placeholder="date de début" value={this.state.dayStart} onChange={this.handleChange} aria-label="dayStart" id="dayStart" aria-describedby="basic-addon1"/>
+                            <input type="date" className="form-control" placeholder="date de début" value={this.state.dayStart} onChange={this.handleChange} aria-label="dayStart" id="dayStart" aria-describedby="basic-addon1" required/>
                         </div>
                         <div className="input-group mb-3">
                             <span className="input-group-text p-3 bg-dark text-warning" id="basic-addon1"><i className="fa fa-calendar-minus"></i></span>
-                            <input type="date" className="form-control" placeholder="date de fin" value={this.state.dayEnd} onChange={this.handleChange} aria-label="dayEnd" id="dayEnd" aria-describedby="basic-addon1"/>
+                            <input type="date" className="form-control" placeholder="date de fin" value={this.state.dayEnd} onChange={this.handleChange} aria-label="dayEnd" id="dayEnd" aria-describedby="basic-addon1" required/>
                         </div>
                         <div className="input-group mb-3">
                             <span className="input-group-text p-3 bg-dark text-warning" id="basic-addon1"><i className="fa fa-hourglass-start"></i></span>
-                            <input type="time" className="form-control" placeholder="heure de début" value={this.state.timeStart} onChange={this.handleChange} aria-label="timeStart" id="timeStart" aria-describedby="basic-addon1"/>
+                            <input type="time" className="form-control" placeholder="heure de début" value={this.state.timeStart} onChange={this.handleChange} aria-label="timeStart" id="timeStart" aria-describedby="basic-addon1" required/>
                         </div>
                         <div className="input-group mb-3">
                             <span className="input-group-text p-3 bg-dark text-warning" id="basic-addon1"><i className="fa fa-hourglass-end"></i></span>
-                            <input type="time" className="form-control" placeholder="Heure de fin" value={this.state.timeEnd} onChange={this.handleChange} aria-label="timeEnd" id="timeEnd" aria-describedby="basic-addon1"/>
+                            <input type="time" className="form-control" placeholder="Heure de fin" value={this.state.timeEnd} onChange={this.handleChange} aria-label="timeEnd" id="timeEnd" aria-describedby="basic-addon1" required/>
                         </div>
                         <div className="input-group mb-3">
                             <span className="input-group-text p-3 bg-dark text-warning" id="basic-addon1"><i className="fa fa-location-arrow"></i></span>
@@ -80,8 +90,9 @@ export default class AddForm extends React.Component{
                             <textarea type="text" className="form-control" placeholder="Description"  value={this.state.description} onChange={this.handleChange} aria-label="description" id="description" aria-describedby="basic-addon1"/>
                         </div>
                         <div className="input-group mb-3">
-                            <button type="submit" className="btn btn-dark text-warning form-control">confirmer<i className="ms-3 fa fa-check"></i></button>
+                            <button type="submit" className="btn btn-dark text-warning form-control" onClick={this.checkForm}>confirmer<i className="ms-3 fa fa-check"></i></button>
                         </div>
+                        <ToastContainer />
                     </form>
                 </div>
             </div>

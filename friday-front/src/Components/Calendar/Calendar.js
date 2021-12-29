@@ -29,7 +29,7 @@ class Calendar extends React.Component{
                     for(let j = 0; j < this.props.events.length; j++){
                         let dayStart = new Date(this.props.events[j]['dayStart']);
                         let dayEnd = new Date(this.props.events[j]['dayEnd']);
-                        if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear()) && dayStart < dayEnd){
+                        if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear()) && dayStart <= dayEnd){
                             tmp.push(i);
                             break;
                         }
@@ -74,7 +74,7 @@ class Calendar extends React.Component{
     }
 
     headerCalendar = () => { return(
-            <div className='row d-none d-sm-none d-lg-flex p-1 bg-dark text-warning'>
+            <div className='row d-none d-sm-none d-lg-flex p-3 mt-3 bg-dark text-warning'>
                 <CurrentMonthAndYear currentDate = {this.props.currentDate}/>
                 {DAYS.map((element, e) => {
                     return (<h5 className="col-sm p-1 text-center">{element}</h5>)
