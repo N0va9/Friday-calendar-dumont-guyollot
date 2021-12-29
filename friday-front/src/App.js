@@ -111,13 +111,39 @@ class App extends React.Component{
     });
   }
 
+  delete  = (path, id) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = {};
+    var requestOptions = {
+      method: 'DELETE',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    fetch("/"+path+"/"+id, requestOptions).then(this.getBase(path));
+  }
+
+  deleteEvent = (event) => {
+    if(this.state.personal.includes(event)){
+      this.delete("personal", event.id);
+    }else if(this.state.icalendar.includes(event)){
+      this.delete("icalendar", event.id);
+    }else if(this.state.google.includes(event)){
+      this.delete("google", event.id);
+    }
+    window.location.reload();
+  }
+
   updateEvent = (id, oldEvent, obj) => {
     if(this.state.personal.includes(oldEvent)){
       this.put(id, obj);
     }else if(this.state.icalendar.includes(oldEvent)){
-      
-    }else{
-
+      this.delete("icalendar", oldEvent.id);
+      this.postPersonal(obj);
+    }else if(this.state.google.includes(oldEvent)){
+      this.delete("google", oldEvent.id);
+      this.postPersonal(obj);
     }
   }
 
@@ -136,7 +162,7 @@ class App extends React.Component{
       return (
         <div className="App container">
           <h1 className="text-center mt-2 mb-2 text-dark">Hello, I am<span className="text-warning"> Friday</span> !</h1>
-          <Daily events={this.generateDailyEvents()} currentDate={this.state.currentDate} update={this.updateEvent}/>
+          <Daily events={this.generateDailyEvents()} currentDate={this.state.currentDate} update={this.updateEvent} delete={this.deleteEvent}/>
           <Buttons postPersonal={this.postPersonal} postIcalendar={this.postIcalendar} postGoogle={this.postGoogle}/>
           <Calendar events={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
         </div>
