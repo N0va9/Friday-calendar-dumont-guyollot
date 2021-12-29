@@ -1,7 +1,7 @@
 import React from "react";
 import EventCard from "./EventCard";
 import CurrentDate from "./CurrentDate";
-import './Daily.css';
+import '../ScrollBar.css'
 
 export default class Daily extends React.Component{
 
