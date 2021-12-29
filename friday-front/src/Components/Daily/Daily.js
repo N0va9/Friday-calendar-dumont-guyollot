@@ -31,7 +31,7 @@ export default class Daily extends React.Component{
                         {allEvents.map(e => {
                             return(
                                 <div className="col-lg-3" key={i++}>
-                                    <EventCard zevent={e}/>
+                                    <EventCard zevent={e} update={this.props.update}/>
                                 </div>
                             );
                         })}
@@ -40,7 +40,7 @@ export default class Daily extends React.Component{
                         {allEvents.map(e => {
                             return(
                                 <div className="col-lg-3" key={i++}>
-                                    <EventCard zevent={e}/>
+                                    <EventCard zevent={e} update={this.props.update}/>
                                 </div>
                             );
                         })}
