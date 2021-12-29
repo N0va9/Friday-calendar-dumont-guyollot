@@ -22,7 +22,7 @@ export default class Daily extends React.Component{
         );
     }
 
-    EventsRender = (allEvents) => {
+    listEventsRender = (allEvents) => {
         let i = 0;
         return(
             <div>
@@ -51,6 +51,6 @@ export default class Daily extends React.Component{
 
     render(){
         let allEvents = this.generateCardGroup();
-        return (allEvents.length === 0) ? <div>{this.noEventRender()}</div> : <div>{this.EventsRender(allEvents)}</div>; 
+        return (allEvents.length === 0) ? <div>{this.noEventRender()}</div> : <div>{this.listEventsRender(allEvents)}</div>; 
     }
 }
