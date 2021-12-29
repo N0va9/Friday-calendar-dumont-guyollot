@@ -42,12 +42,11 @@ class App extends React.Component{
       redirect: 'follow'
     };
     fetch("/personal", requestOptions).then((res) => {
-      switch(res.status.valueOf()){
+      switch(res.status){
         case 406 :
           alert("Not Acceptable Event !");
           break;
         default :
-          alert(res.status);
           this.getBase("personal");
           break;
       }
@@ -65,12 +64,34 @@ class App extends React.Component{
       redirect: 'follow'
     };
     fetch("/icalendar/"+type, requestOptions).then((res) => {
-      switch(res.status.valueOf()){
+      switch(res.status){
         case 406 :
           alert("Not Acceptable icalendar !");
           break;
         default :
           this.getBase("icalendar");
+          break;
+      }
+    });
+  }
+
+  postGoogle = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = {};
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    fetch("/google", requestOptions).then((res) => {
+      switch(res.status){
+        case 406 :
+          alert("Not Acceptable icalendar !");
+          break;
+        default :
+          this.getBase("google");
           break;
       }
     });
@@ -92,7 +113,7 @@ class App extends React.Component{
         <div className="App container">
           <h1 className="text-center mt-2 mb-2"><span className="text-black">Hello, I</span><span className="text-warning"> am Friday !</span></h1>
           <Daily events={this.generateDailyEvents()} currentDate={this.state.currentDate}/>
-          <Buttons postPersonal={this.postPersonal} postIcalendar={this.postIcalendar}/>
+          <Buttons postPersonal={this.postPersonal} postIcalendar={this.postIcalendar} postGoogle={this.postGoogle}/>
           <Calendar events={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
         </div>
       );

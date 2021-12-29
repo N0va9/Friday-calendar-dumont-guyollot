@@ -35,7 +35,7 @@ export default class IcalForm extends React.Component{
         return(
             <div className="offcanvas offcanvas-start" tabIndex={-1} id="AddIcal" aria-labelledby="AddIcalLabel">
                 <div className="offcanvas-header">
-                    <h5 className="offcanvas-title" id="offcanvasExampleLabel">Ajouter un évènement</h5>
+                    <h5 className="offcanvas-title" id="offcanvasExampleLabel">Ajouter des évènements Icalendar</h5>
                     <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div className="offcanvas-body">
