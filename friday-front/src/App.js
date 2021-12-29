@@ -20,7 +20,7 @@ class App extends React.Component{
   }
 
   getBase = (base) => {
-    fetch("/"+base).then(response => {
+    fetch("/"+base, {}).then(response => {
       if(response.ok === true){
         return response.json();
       } else {
@@ -32,21 +32,22 @@ class App extends React.Component{
   }
 
   postPersonal = (obj) => {
-    var data = new FormData();
-    data.append("json", JSON.stringify(obj));
-    fetch("/personal", {
-      method: "POST",
-      body: data
-    }).then(res => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify(obj);
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    fetch("/personal", requestOptions).then((res) => {
       switch(res.status.valueOf()){
-        case 201 :
-          this.getBase("/personal");
-          break;
         case 406 :
-          alert("Error unacceptable event !");
+          alert("Not Acceptable Event !");
           break;
         default :
-          alert("Error !");
+          this.getBase("personal");
           break;
       }
     });
@@ -68,7 +69,7 @@ class App extends React.Component{
         <div className="App container">
           <h1 className="text-center mt-2 mb-2"><span className="text-black">Hello, I</span><span className="text-warning"> am Friday !</span></h1>
           <Daily events={this.generateDailyEvents()} currentDate={this.state.currentDate}/>
-          <Buttons />
+          <Buttons postPersonal={this.postPersonal}/>
           <Calendar events={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
         </div>
       );

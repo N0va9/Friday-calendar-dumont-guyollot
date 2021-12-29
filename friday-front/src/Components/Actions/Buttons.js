@@ -7,7 +7,7 @@ export default class Buttons extends React.Component{
     render(){
         return(
             <div className="fixed-bottom m-5">
-                <AddEvent />
+                <AddEvent onEventAdd={this.props.postPersonal}/>
             </div>
         );
     }
