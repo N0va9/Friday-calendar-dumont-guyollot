@@ -47,6 +47,7 @@ class App extends React.Component{
           alert("Not Acceptable Event !");
           break;
         default :
+          alert(res.status);
           this.getBase("personal");
           break;
       }
