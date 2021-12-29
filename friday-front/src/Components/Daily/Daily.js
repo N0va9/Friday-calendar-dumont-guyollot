@@ -1,6 +1,7 @@
 import React from "react";
 import EventCard from "./EventCard";
-import './Daily.css';
+import CurrentDate from "./CurrentDate";
+import '../ScrollBar.css'
 
 export default class Daily extends React.Component{
 
@@ -15,6 +16,7 @@ export default class Daily extends React.Component{
     noEventRender = () => {
         return(
             <div>
+                <CurrentDate currentDate={new Date(this.props.currentDate)}/>
                 <h5 className="display-6 text-center p-3 mt-3">Pas d'évènements aujourd'hui</h5>
             </div>
         );
@@ -24,6 +26,7 @@ export default class Daily extends React.Component{
         let i = 0;
         return(
             <div>
+                <CurrentDate currentDate={new Date(this.props.currentDate)}/>
                 <div className="row overflow-auto flex-row flex-nowrap pb-3 custom-scrollbar-css d-none d-md-none d-lg-flex" >
                     {allEvents.map(e => {
                         return(
