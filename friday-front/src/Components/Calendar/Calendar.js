@@ -4,7 +4,7 @@ import DayCard from "./DayCard";
 class Calendar extends React.Component{
     //Savoir si le mois actuel finit par un 28, 30 ou 31
     getLastDate = () => {
-        let d = new Date();
+        let d = new Date(this.props.currentDate);
         d.setFullYear(this.props.currentDate.getFullYear() + 1);
         d.setMonth((this.props.currentDate.getMonth() + 1) % 12);
         d.setDate(0);
@@ -12,7 +12,7 @@ class Calendar extends React.Component{
     }
 
     getFirstDay = () => {
-        let d = new Date();
+        let d = new Date(this.props.currentDate);
         d.setDate(1);
         return d.getDay();
     }
