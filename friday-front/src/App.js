@@ -85,16 +85,40 @@ class App extends React.Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch("/google", requestOptions).then((res) => {
+    fetch("/google", requestOptions).then(this.getBase("google"));
+  }
+
+  put = (id, obj) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify(obj);
+    var requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    fetch("/personal/"+id, requestOptions).then((res) => {
       switch(res.status){
         case 406 :
-          alert("Not Acceptable icalendar !");
+          alert("Not Acceptable modification !");
           break;
         default :
-          this.getBase("google");
+        console.log(res);
+          this.getBase("personal");
           break;
       }
     });
+  }
+
+  updateEvent = (id, oldEvent, obj) => {
+    if(this.state.personal.includes(oldEvent)){
+      this.put(id, obj);
+    }else if(this.state.icalendar.includes(oldEvent)){
+      
+    }else{
+
+    }
   }
 
   generateDailyEvents = () => {
@@ -111,8 +135,8 @@ class App extends React.Component{
     if(this.state.proxyGood === 0){
       return (
         <div className="App container">
-          <h1 className="text-center mt-2 mb-2"><span className="text-black">Hello, I</span><span className="text-warning"> am Friday !</span></h1>
-          <Daily events={this.generateDailyEvents()} currentDate={this.state.currentDate}/>
+          <h1 className="text-center mt-2 mb-2 text-dark">Hello, I am<span className="text-warning"> Friday</span> !</h1>
+          <Daily events={this.generateDailyEvents()} currentDate={this.state.currentDate} update={this.updateEvent}/>
           <Buttons postPersonal={this.postPersonal} postIcalendar={this.postIcalendar} postGoogle={this.postGoogle}/>
           <Calendar events={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
         </div>
