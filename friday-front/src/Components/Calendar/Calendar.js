@@ -2,6 +2,7 @@ import React from 'react';
 import DayCard from "./DayCard";
 
 class Calendar extends React.Component{
+    //Savoir si le mois actuel finit par un 28, 30 ou 31
     getLastDate = () => {
         let d = new Date();
         d.setFullYear(this.props.currentDate.getFullYear() + 1);
@@ -16,19 +17,21 @@ class Calendar extends React.Component{
         return d.getDay();
     }
 
+    //Vérifier si y'a des events et renvoie le tableau avec tous les events du mois
     daysWithEvents = () => {
-        if(this.props.eventsPersonal !== []){
-            let d = this.props.currentDate;
+        if(this.props.events !== []){
+            let d = new Date(this.props.currentDate);
             let tmp = [];
-            if(this.props.eventsPersonal !== undefined){
+            if(this.props.events !== undefined){
                 for(let i = 1; i <= this.getLastDate(); i++){
-                    for(let j = 0; j < this.props.eventsPersonal.length; j++){
-                        let dayStart = new Date(this.props.eventsPersonal[j]['dayStart']);
-                        let dayEnd = new Date(this.props.eventsPersonal[j]['dayEnd']);
-                        if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear()) && (dayEnd.getFullYear() >= d.getFullYear() && i <= dayEnd.getDate())){
+                    for(let j = 0; j < this.props.events.length; j++){
+                        let dayStart = new Date(this.props.events[j]['dayStart']);
+                        let dayEnd = new Date(this.props.events[j]['dayEnd']);
+                        if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear()) && dayStart < dayEnd){
                             tmp.push(i);
                             break;
                         }
+
                     }
                 }
             }
@@ -40,8 +43,9 @@ class Calendar extends React.Component{
         let firstDay = this.getFirstDay();
         let calendarDays = [];
         let week = [];
+        //Si le premier jour n'est pas un dimanche
         if(firstDay !== 0){
-            let t = new Date();
+            let t = new Date(this.props.currentDate);
             t.setDate(0);
             for(let i = t.getDate() - (firstDay) + 1; i <= t.getDate(); i++){
                 week.push(<DayCard date={i} event={false} key={100 + i} inMonth={false}/>);
@@ -66,8 +70,6 @@ class Calendar extends React.Component{
         calendarDays.push(week);
         return calendarDays;
     }
-
-
 
     headerCalendar = () => {
         const days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];

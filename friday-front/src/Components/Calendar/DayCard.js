@@ -15,7 +15,7 @@ class DayCard extends React.Component{
 
     dayOfTheMonth = (inMonth) => {
         return(
-            <h4 className={this.checkClassName("col-1 text-", "dark", "danger")}>
+            <h4 className={this.checkClassName("col-1 ", "text-dark", "text-danger", inMonth)}>
                 {this.props.date}
             </h4>
         );
