@@ -27,11 +27,17 @@ class Calendar extends React.Component{
                     for(let j = 0; j < this.props.events.length; j++){
                         let dayStart = new Date(this.props.events[j]['dayStart']);
                         let dayEnd = new Date(this.props.events[j]['dayEnd']);
-                        if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear()) && dayStart <= dayEnd){
-                            tmp.push(i);
-                            break;
+                        if(dayStart.getMonth() !== dayEnd.getMonth()){
+                            if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear() && dayStart.getMonth() === d.getMonth()) && i<=this.getLastDate()){
+                                tmp.push(i);
+                                break;
+                            }
+                        } else {
+                            if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear() && dayStart.getMonth() === d.getMonth()) && i <= dayEnd.getDate()){
+                                tmp.push(i);
+                                break;
+                            }
                         }
-
                     }
                 }
             }

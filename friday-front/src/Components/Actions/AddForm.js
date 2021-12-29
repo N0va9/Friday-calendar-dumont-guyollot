@@ -18,11 +18,11 @@ export default class AddForm extends React.Component{
         let obj = {
             title: this.state.title,
             dayStart: this.state.dayStart,
-            dayEnd: this.state.dayEnd,
-            timeStart: this.state.timeStart + ":00",
-            timeEnd: this.state.timeEnd + ":00",
-            localisation: this.state.localisation === "" ? "No localisation" : this.state.localisation,
-            description: this.state.description=== "" ? "No description" : this.state.description
+            dayEnd: this.state.dayEnd === "" ? this.state.dayStart : this.state.dayEnd,
+            timeStart: this.state.timeStart === "" ? "00:00:00" : this.state.timeStart + ":00",
+            timeEnd: this.state.timeEnd === "" ? "00:00:00" : this.state.timeEnd + ":00",
+            localisation: this.state.localisation === "" ? "pas de localisation" : this.state.localisation,
+            description: this.state.description=== "" ? "pas de description" : this.state.description
         };
         this.props.onEventAdd(obj);
         this.setState({
