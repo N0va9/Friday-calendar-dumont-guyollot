@@ -10,7 +10,7 @@ export default class AddEvent extends React.Component{
                 <button type="button" className="btn btn-lg btn-outline-success rounded rounded-circle float-end" data-bs-toggle="offcanvas" data-bs-target="#AddEvent" aria-controls="AddEvent">
                     <i className="fa fa-plus"></i>
                 </button>
-                <AddForm />
+                <AddForm onEventAdd={this.props.onEventAdd}/>
             </div>
         );
     }
