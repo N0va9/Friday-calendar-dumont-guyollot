@@ -9,8 +9,8 @@ export default class UpdateEvent extends React.Component{
         dayEnd: this.props.event.dayEnd,
         timeStart: this.props.event.timeStart,
         timeEnd: this.props.event.timeEnd,
-        localisation: this.props.event.localisation,
-        description: this.props.event.description
+        localisation: this.props.event.localisation === null ? "pas de localisation" : this.props.event.localisation,
+        description: this.props.event.description === null ? "pas de description" : this.props.event.description
     }
 
     handleSubmit = (event) => {
@@ -22,7 +22,7 @@ export default class UpdateEvent extends React.Component{
             timeStart: this.state.timeStart === "" ? "00:00:00" : this.state.timeStart,
             timeEnd: this.state.timeEnd === "" ? "00:00:00" : this.state.timeEnd,
             localisation: this.state.localisation === "" ? "pas de localisation" : this.state.localisation,
-            description: this.state.description=== "" ? "pas de description" : this.state.description
+            description: this.state.description === "" ? "pas de description" : this.state.description
         };
         this.props.update(this.props.event.id, this.props.event, obj);
     }
