@@ -19,14 +19,14 @@ export default class Daily extends React.Component{
         if(allEvents.length === 0){
             return(
                 <div>
-                    <CurrentDate currentDate={new Date()}/>
+                    <CurrentDate currentDate={new Date(this.props.currentDate)}/>
                     <h5 className="display-6 text-center p-3 mt-3">Pas d'évènements aujourd'hui</h5>
                 </div>
             );
         } else {
             return(
                 <div>
-                    <CurrentDate currentDate={new Date()}/>
+                    <CurrentDate currentDate={new Date(this.props.currentDate)}/>
                     <div className="row overflow-auto flex-row flex-nowrap pb-3 custom-scrollbar-css d-none d-md-none d-lg-flex" >
                         {allEvents.map(e => {
                             return(
