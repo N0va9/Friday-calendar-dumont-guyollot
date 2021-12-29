@@ -14,12 +14,12 @@ class App extends React.Component{
   }
 
   componentDidMount = () => {
-    this.fetchBase("personal");
-    this.fetchBase("icalendar");
-    this.fetchBase("google");
+    this.getBase("personal");
+    this.getBase("icalendar");
+    this.getBase("google");
   }
 
-  fetchBase = (base) => {
+  getBase = (base) => {
     fetch("/"+base).then(response => {
       if(response.ok === true){
         return response.json();
@@ -28,6 +28,27 @@ class App extends React.Component{
       }
     }).then(respJ => {
       this.setState({[base] : respJ});
+    });
+  }
+
+  postPersonal = (obj) => {
+    var data = new FormData();
+    data.append("json", JSON.stringify(obj));
+    fetch("/personal", {
+      method: "POST",
+      body: data
+    }).then(res => {
+      switch(res.status.valueOf()){
+        case 201 :
+          this.getBase("/personal");
+          break;
+        case 406 :
+          alert("Error unacceptable event !");
+          break;
+        default :
+          alert("Error !");
+          break;
+      }
     });
   }
 
@@ -48,7 +69,7 @@ class App extends React.Component{
           <h1 className="text-center mt-2 mb-2"><span className="text-black">Hello, I</span><span className="text-warning"> am Friday !</span></h1>
           <Daily events={this.generateDailyEvents()} />
           <Buttons />
-          <Calendar eventsPersonal={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
+          <Calendar events={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
         </div>
       );
     } else if(this.state.proxyGood === 500) {
