@@ -5,7 +5,7 @@ import CurrentMonthAndYear from './CurrentMonthYear';
 class Calendar extends React.Component{
 
     getLastDate = () => {
-        let d = new Date();
+        let d = new Date(this.props.currentDate);
         d.setFullYear(this.props.currentDate.getFullYear() + 1);
         d.setMonth((this.props.currentDate.getMonth() + 1) % 12);
         d.setDate(0);
@@ -13,24 +13,25 @@ class Calendar extends React.Component{
     }
 
     getFirstDay = () => {
-        let d = new Date();
+        let d = new Date(this.props.currentDate);
         d.setDate(1);
         return d.getDay();
     }
 
     daysWithEvents = () => {
-        if(this.props.eventsPersonal !== []){
-            let d = this.props.currentDate;
+        if(this.props.events !== []){
+            let d = new Date(this.props.currentDate);
             let tmp = [];
-            if(this.props.eventsPersonal !== undefined){
+            if(this.props.events !== undefined){
                 for(let i = 1; i <= this.getLastDate(); i++){
-                    for(let j = 0; j < this.props.eventsPersonal.length; j++){
-                        let dayStart = new Date(this.props.eventsPersonal[j]['dayStart']);
-                        let dayEnd = new Date(this.props.eventsPersonal[j]['dayEnd']);
-                        if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear()) && (dayEnd.getFullYear() >= d.getFullYear() && i <= dayEnd.getDate())){
+                    for(let j = 0; j < this.props.events.length; j++){
+                        let dayStart = new Date(this.props.events[j]['dayStart']);
+                        let dayEnd = new Date(this.props.events[j]['dayEnd']);
+                        if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear()) && dayStart < dayEnd){
                             tmp.push(i);
                             break;
                         }
+
                     }
                 }
             }
@@ -43,7 +44,7 @@ class Calendar extends React.Component{
         let calendarDays = [];
         let week = [];
         if(firstDay !== 0){
-            let t = new Date();
+            let t = new Date(this.props.currentDate);
             t.setDate(0);
             for(let i = t.getDate() - (firstDay) + 1; i <= t.getDate(); i++){
                 week.push(<DayCard date={i} event={false} key={100 + i} inMonth={false}/>);
