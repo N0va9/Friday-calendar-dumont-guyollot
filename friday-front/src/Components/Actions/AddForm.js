@@ -40,7 +40,7 @@ export default class AddForm extends React.Component{
                         <input type="text" className="form-control" placeholder="Description" aria-label="description" aria-describedby="basic-addon1"/>
                     </div>
                     <div className="input-group mb-3">
-                        <button type="submit" class="btn btn-dark text-warning">confirmer<i className="ms-3 fa fa-check"></i></button>
+                        <button type="submit" className="btn btn-dark text-warning">confirmer<i className="ms-3 fa fa-check"></i></button>
                     </div>
                 </div>
             </div>
