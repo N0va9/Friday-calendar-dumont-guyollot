@@ -3,6 +3,9 @@ import Calendar from "./Components/Calendar/Calendar";
 import Daily from "./Components/Daily/Daily";
 import Buttons from "./Components/Actions/Buttons";
 import NextEvent from "./Components/NextEvent/NextEvent";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { selectOptions } from "@testing-library/user-event/dist/select-options";
 
 class App extends React.Component{
 
@@ -132,6 +135,7 @@ class App extends React.Component{
     }else if(this.state.google.includes(event)){
       this.delete("google", event.id);
     }
+    toast.success("L'event "+event.title+" a bien été supprimé");
   }
 
   updateEvent = (id, oldEvent, obj) => {
@@ -144,6 +148,7 @@ class App extends React.Component{
       this.delete("google", oldEvent.id);
       this.postPersonal(obj);
     }
+    toast.success("L'event "+ obj.title +" a bien été modifiée");
   }
 
   generateDailyEvents = () => {
