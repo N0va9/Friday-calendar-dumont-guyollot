@@ -5,7 +5,6 @@ import Buttons from "./Components/Actions/Buttons";
 import NextEvent from "./Components/NextEvent/NextEvent";
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { selectOptions } from "@testing-library/user-event/dist/select-options";
 
 class App extends React.Component{
 
