@@ -1,6 +1,4 @@
 import React from "react";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 export default class UpdateEvent extends React.Component{
 
@@ -71,9 +69,8 @@ export default class UpdateEvent extends React.Component{
                             <textarea type="text" className="form-control" value={this.state.description} onChange={this.handleChange} aria-label="description" id="description" aria-describedby="basic-addon1"/>
                         </div>
                         <div className="input-group mb-3">
-                            <button type="submit" className="btn btn-dark text-warning form-control">confirmer<i className="ms-3 fa fa-check"></i></button>
+                            <button type="submit" className="btn btn-dark text-warning form-control" data-bs-dismiss="offcanvas" aria-label="Close">confirmer<i className="ms-3 fa fa-check"></i></button>
                         </div>
-                        <ToastContainer />
                     </form>
                 </div>
             </div>
