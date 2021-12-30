@@ -1,6 +1,7 @@
 import React from 'react';
 import DayCard from "./DayCard";
 import CurrentMonthAndYear from './CurrentMonthYear';
+import { DAYS } from '../../Const';
 
 class Calendar extends React.Component{
 
@@ -38,6 +39,7 @@ class Calendar extends React.Component{
                                 break;
                             }
                         }
+
                     }
                 }
             }
@@ -76,30 +78,39 @@ class Calendar extends React.Component{
         return calendarDays;
     }
 
-    render(){
-        let i = 0;
-        return(
-            <div>
+    headerCalendar = () => { return(
+            <div className='row d-none d-sm-none d-lg-flex p-3 mt-3 bg-dark text-warning'>
                 <CurrentMonthAndYear currentDate = {this.props.currentDate}/>
-                <div className='row d-none d-sm-none d-lg-flex p-1 bg-dark text-warning'>
-                    <h5 className="col-sm p-1 text-center">Dimanche</h5>
-                    <h5 className="col-sm p-1 text-center">Lundi</h5>
-                    <h5 className="col-sm p-1 text-center">Mardi</h5>
-                    <h5 className="col-sm p-1 text-center">Mercredi</h5>
-                    <h5 className="col-sm p-1 text-center">Jeudi</h5>
-                    <h5 className="col-sm p-1 text-center">Vendredi</h5>
-                    <h5 className="col-sm p-1 text-center">Samedi</h5>
-                </div>
-                {this.generateCalendar().map(week => {
-                    return(
-                        <div className='row' key={i++}>
-                            {week}
-                        </div>
-                    );
+                {DAYS.map((element, e) => {
+                    return (<h5 className="col-sm p-1 text-center">{element}</h5>)
                 })}
             </div>
         );
     }
+
+    buildCalendar = () => {
+        let i = 0;
+        return(
+            <div>
+                {this.generateCalendar().map(week => {
+                    return(<div className='row' key={i++}>{week}</div>);
+                })}
+            </div>
+        );
+    }
+
+    drawCalendar = () => { return(
+            <div>
+                {this.headerCalendar()}
+                {this.buildCalendar()}
+            </div>
+    ) ;}
+
+    render() { return(
+            <div>
+                {this.drawCalendar()}
+            </div>
+    ); }
 }
 
 export default Calendar;
