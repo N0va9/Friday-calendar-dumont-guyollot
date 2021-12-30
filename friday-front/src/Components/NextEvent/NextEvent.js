@@ -1,5 +1,5 @@
 import React from "react";
-import CountDownrip from "./CountDownrip";
+import CountDown from "./CountDown";
 
 export default class NextEvent extends React.Component {
 
@@ -29,8 +29,8 @@ export default class NextEvent extends React.Component {
     renderMainInfo = (newEvent) => {
         if(newEvent !== undefined){
             return (
-                <div className="col-sm-9">
-                    <div className="card text-center bg-dark rounded-0">
+                <div className="col-lg-7 mt-3 ">
+                    <div className="card text-center bg-dark rounded-0 ">
                     <div className="card-header text-warning">
                             <h3>Prochain évent</h3>
                         </div>
@@ -60,14 +60,14 @@ export default class NextEvent extends React.Component {
     renderDetails = (newEvent) => {
         if(newEvent !== undefined){
             return(
-                <div className="col-sm-3 align-self-stretch">
-                    <div className="card text-center bg-dark rounded-0">
+                <div className="col-lg-5 align-self-stretch mt-3">
+                    <div className="card text-center bg-dark rounded-0 ">
                         <div className="card-header text-warning">
                             <h3>Temps restant avant le prochain évent</h3>
                         </div>
                         <div className="card-body">
-                            <h2 className="card-title text-warning mb-4">
-                                <CountDownrip event={newEvent} currentDate={this.props.currentDate}/>
+                            <h2 className="card-title">
+                                <CountDown event = {newEvent}/>
                             </h2>
                         </div>
                     </div>
