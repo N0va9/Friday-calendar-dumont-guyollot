@@ -132,7 +132,6 @@ class App extends React.Component{
     }else if(this.state.google.includes(event)){
       this.delete("google", event.id);
     }
-    window.location.reload();
   }
 
   updateEvent = (id, oldEvent, obj) => {

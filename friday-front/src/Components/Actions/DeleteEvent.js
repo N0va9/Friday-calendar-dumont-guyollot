@@ -13,7 +13,7 @@ export default class DeleteEvent extends React.Component{
                     <p>
                         Veuillez confimer la supression de l'évènement.
                     </p>
-                    <button type="button" className="btn btn-danger form-control" onClick={() => this.props.delete(this.props.event)}>Supprimer<i className="ms-3 fa fa-exclamation-triangle"></i></button>
+                    <button type="button" className="btn btn-danger form-control" onClick={() => this.props.delete(this.props.event)} data-bs-dismiss="offcanvas" aria-label="Close">Supprimer<i className="ms-3 fa fa-exclamation-triangle"></i></button>
                 </div>
             </div>
         );
