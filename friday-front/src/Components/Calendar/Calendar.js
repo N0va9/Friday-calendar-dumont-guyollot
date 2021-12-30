@@ -4,7 +4,7 @@ import CurrentMonthAndYear from './CurrentMonthYear';
 import { DAYS } from '../../Const';
 
 class Calendar extends React.Component{
-    //Savoir si le mois actuel finit par un 28, 30 ou 31
+
     getLastDate = () => {
         let d = new Date(this.props.currentDate);
         d.setFullYear(this.props.currentDate.getFullYear() + 1);
@@ -19,7 +19,6 @@ class Calendar extends React.Component{
         return d.getDay();
     }
 
-    //Vérifier si y'a des events et renvoie le tableau avec tous les events du mois
     daysWithEvents = () => {
         if(this.props.events !== []){
             let d = new Date(this.props.currentDate);
@@ -29,9 +28,16 @@ class Calendar extends React.Component{
                     for(let j = 0; j < this.props.events.length; j++){
                         let dayStart = new Date(this.props.events[j]['dayStart']);
                         let dayEnd = new Date(this.props.events[j]['dayEnd']);
-                        if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear()) && dayStart <= dayEnd){
-                            tmp.push(i);
-                            break;
+                        if(dayStart.getMonth() !== dayEnd.getMonth()){
+                            if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear() && dayStart.getMonth() === d.getMonth()) && i<=this.getLastDate()){
+                                tmp.push(i);
+                                break;
+                            }
+                        } else {
+                            if((i >= dayStart.getDate() && dayStart.getFullYear() === d.getFullYear() && dayStart.getMonth() === d.getMonth()) && i <= dayEnd.getDate()){
+                                tmp.push(i);
+                                break;
+                            }
                         }
 
                     }
@@ -45,7 +51,6 @@ class Calendar extends React.Component{
         let firstDay = this.getFirstDay();
         let calendarDays = [];
         let week = [];
-        //Si le premier jour n'est pas un dimanche
         if(firstDay !== 0){
             let t = new Date(this.props.currentDate);
             t.setDate(0);

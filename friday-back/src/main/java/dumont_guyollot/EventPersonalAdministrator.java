@@ -50,6 +50,12 @@ public class EventPersonalAdministrator {
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(id).build();
         }
         event.title = newEventPersonal.title;
+        event.dayStart = newEventPersonal.dayStart;
+        event.dayEnd = newEventPersonal.dayEnd;
+        event.timeStart = newEventPersonal.timeStart;
+        event.timeEnd = newEventPersonal.timeEnd;
+        event.localisation = newEventPersonal.localisation;
+        event.description = newEventPersonal.description;
         return Response.status(Response.Status.ACCEPTED).entity(id).build();
     }
 }

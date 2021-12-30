@@ -53,6 +53,100 @@ class App extends React.Component{
     });
   }
 
+  postIcalendar = (type, obj) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify(obj);
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    fetch("/icalendar/"+type, requestOptions).then((res) => {
+      switch(res.status){
+        case 406 :
+          alert("Not Acceptable icalendar !");
+          break;
+        default :
+          this.getBase("icalendar");
+          break;
+      }
+    });
+  }
+
+  postGoogle = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = {};
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    fetch("/google", requestOptions).then(this.getBase("google"));
+  }
+
+  put = (id, obj) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify(obj);
+    var requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    fetch("/personal/"+id, requestOptions).then((res) => {
+      switch(res.status){
+        case 406 :
+          alert("Not Acceptable modification !");
+          break;
+        default :
+        console.log(res);
+          this.getBase("personal");
+          break;
+      }
+    });
+  }
+
+  delete  = (path, id) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = {};
+    var requestOptions = {
+      method: 'DELETE',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    fetch("/"+path+"/"+id, requestOptions).then(this.getBase(path));
+  }
+
+  deleteEvent = (event) => {
+    if(this.state.personal.includes(event)){
+      this.delete("personal", event.id);
+    }else if(this.state.icalendar.includes(event)){
+      this.delete("icalendar", event.id);
+    }else if(this.state.google.includes(event)){
+      this.delete("google", event.id);
+    }
+    window.location.reload();
+  }
+
+  updateEvent = (id, oldEvent, obj) => {
+    if(this.state.personal.includes(oldEvent)){
+      this.put(id, obj);
+    }else if(this.state.icalendar.includes(oldEvent)){
+      this.delete("icalendar", oldEvent.id);
+      this.postPersonal(obj);
+    }else if(this.state.google.includes(oldEvent)){
+      this.delete("google", oldEvent.id);
+      this.postPersonal(obj);
+    }
+  }
+
   generateDailyEvents = () => {
     let tmp = [];
     [...this.state.personal, ...this.state.google, ...this.state.icalendar].forEach(e => {

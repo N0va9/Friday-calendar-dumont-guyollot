@@ -24,8 +24,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Consumes(MediaType.APPLICATION_JSON)
 public class EventIcalendarAdministrator {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
-
     @GET
     public List<EventIcalendar> getEventsList(){
         List<EventIcalendar> eventsIcalendar = EventIcalendar.listAll();
@@ -62,7 +60,9 @@ public class EventIcalendarAdministrator {
     public Response synchronizedDatabaseByLink(String jsonLink) {
         String link;
         try{
-            link = mapper.readTree(jsonLink).get("link").asText();
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode node = mapper.readTree(jsonLink);
+            link = node.get("link").asText();
         }catch(JsonProcessingException e){
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(jsonLink).build();
         }
