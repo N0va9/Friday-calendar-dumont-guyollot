@@ -47,9 +47,10 @@ class App extends React.Component{
     fetch("/personal", requestOptions).then((res) => {
       switch(res.status.valueOf()){
         case 406 :
-          alert("Not Acceptable Event !");
+          toast.warn("Event non adéquat");
           break;
         default :
+        toast.success("L'event "+ obj.title +" a bien été crée");
           this.getBase("personal");
           break;
       }
@@ -69,9 +70,10 @@ class App extends React.Component{
     fetch("/icalendar/"+type, requestOptions).then((res) => {
       switch(res.status){
         case 406 :
-          alert("Not Acceptable icalendar !");
+          toast.warn("Icalendar non adéquat");
           break;
         default :
+          toast.success("Icalendar parfaitement ajouté");
           this.getBase("icalendar");
           break;
       }
@@ -88,7 +90,10 @@ class App extends React.Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch("/google", requestOptions).then(this.getBase("google"));
+    fetch("/google", requestOptions).then(() => {
+      toast.success("Google Calendar parfaitement synchroniser");
+      this.getBase("google");
+    });
   }
 
   put = (id, obj) => {
@@ -160,6 +165,22 @@ class App extends React.Component{
     return tmp;
   }
 
+  //Trouve le prochain event qui va arriver
+  findNextEvent = () => {
+    let listEvents = [...this.state.personal, ...this.state.google, ...this.state.icalendar];
+    if(listEvents !== undefined){
+      var minEvent = listEvents[0];
+      for (let index = 0; index < listEvents.length; index++) {
+          if (listEvents[index]['dayStart'] === minEvent['dayStart']){ //Si les deux events commencent le même jour
+              if (listEvents[index]['timeStart'] < minEvent['timeStart']) minEvent = listEvents[index]; //On compare à l'heure du début et on change la valeur de minEvent si le nouvel event est plus proche que l'autre
+          } else { //Sinon
+              if (listEvents[index]['dayStart'] < minEvent['dayStart']) minEvent = listEvents[index];
+          }
+      }
+      return minEvent;
+    }
+  }
+
   generateErrorScreen = (errorname, code) => { return (
       <div className="App container bg-danger">
         <div className="card bg-danger text-white text-center position-absolute top-50 start-50 translate-middle" style={{width: "60vw"}}>
@@ -172,8 +193,8 @@ class App extends React.Component{
 
   generateCalendarScreen = () => { return (
       <div className="App container">
-        <h1 className="text-center mt-2 mb-2 text-dark">Hello, I am <span className="text-warning"> Friday </span> !</h1>
-        <NextEvent listEvents={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
+        <h1 className="text-center mt-2 mb-2 text-dark">Bonjour, je suis <span className="text-warning"> Friday </span> !</h1>
+        <NextEvent nextEvent={this.findNextEvent()}/>
         <Daily events={this.generateDailyEvents() } currentDate={this.state.currentDate} update={this.updateEvent} delete={this.deleteEvent}/>
         <Buttons postPersonal={this.postPersonal} postGoogle={this.postGoogle} postIcalendar={this.postIcalendar}/>
         <Calendar events={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
