@@ -63,7 +63,6 @@ export default class CountDown extends React.Component {
         return (true) ? <div>{this.drawCountdown(days, hours, minutes, seconds)}</div>: null;   
     }
     
-
     drawCountdown = (days, hours, minutes, seconds) => {
         const daysRadius = this.mapNumber(days, 30, 0, 0, 360);
         const hoursRadius = this.mapNumber(hours, 24, 0, 0, 360);

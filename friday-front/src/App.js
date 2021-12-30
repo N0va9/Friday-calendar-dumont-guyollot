@@ -179,6 +179,7 @@ class App extends React.Component{
       }
       return minEvent;
     }
+    return undefined;
   }
 
   generateErrorScreen = (errorname, code) => { return (
