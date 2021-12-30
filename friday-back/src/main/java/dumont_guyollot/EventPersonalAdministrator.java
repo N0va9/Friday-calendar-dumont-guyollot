@@ -41,6 +41,16 @@ public class EventPersonalAdministrator {
         return Response.status(Response.Status.ACCEPTED).entity(id).build();
     }
 
+    private void eventMapper(EventPersonal event1, EventPersonal event2){
+        event1.title = event2.title;
+        event1.dayStart = event2.dayStart;
+        event1.dayEnd = event2.dayEnd;
+        event1.timeStart = event2.timeStart;
+        event1.timeEnd = event2.timeEnd;
+        event1.localisation = event2.localisation;
+        event1.description = event2.description;
+    }
+
     @PUT
     @Path("/{id}")
     @Transactional
@@ -49,13 +59,7 @@ public class EventPersonalAdministrator {
         if(event == null){
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(id).build();
         }
-        event.title = newEventPersonal.title;
-        event.dayStart = newEventPersonal.dayStart;
-        event.dayEnd = newEventPersonal.dayEnd;
-        event.timeStart = newEventPersonal.timeStart;
-        event.timeEnd = newEventPersonal.timeEnd;
-        event.localisation = newEventPersonal.localisation;
-        event.description = newEventPersonal.description;
+        eventMapper(event, newEventPersonal);
         return Response.status(Response.Status.ACCEPTED).entity(id).build();
     }
 }
