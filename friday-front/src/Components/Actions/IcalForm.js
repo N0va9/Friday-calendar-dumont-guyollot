@@ -54,7 +54,7 @@ export default class IcalForm extends React.Component{
                             <input type="text" className="form-control" placeholder="chemin absolu du fichier" value={this.state.file} onChange={this.handleChange} aria-label="file" id="file" aria-describedby="basic-addon1"/>
                         </div>
                         <div className="input-group mb-3">
-                            <button type="submit" className="btn btn-dark text-warning form-control">confirmer fichier<i className="ms-3 fa fa-check"></i></button>
+                            <button type="submit" className="btn btn-dark text-warning form-control" data-bs-dismiss="offcanvas" aria-label="Close">confirmer fichier<i className="ms-3 fa fa-check"></i></button>
                         </div>
                     </form>
                 </div>

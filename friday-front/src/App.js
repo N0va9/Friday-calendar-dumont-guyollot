@@ -3,7 +3,7 @@ import Calendar from "./Components/Calendar/Calendar";
 import Daily from "./Components/Daily/Daily";
 import Buttons from "./Components/Actions/Buttons";
 import NextEvent from "./Components/NextEvent/NextEvent";
-import {toast} from 'react-toastify';
+import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 class App extends React.Component{
@@ -175,8 +175,9 @@ class App extends React.Component{
         <h1 className="text-center mt-2 mb-2 text-dark">Hello, I am <span className="text-warning"> Friday </span> !</h1>
         <NextEvent listEvents={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
         <Daily events={this.generateDailyEvents() } currentDate={this.state.currentDate} update={this.updateEvent} delete={this.deleteEvent}/>
-        <Buttons postPersonal={this.postPersonal}/>
+        <Buttons postPersonal={this.postPersonal} postGoogle={this.postGoogle} postIcalendar={this.postIcalendar}/>
         <Calendar events={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
+        <ToastContainer />
       </div>
   );}
 

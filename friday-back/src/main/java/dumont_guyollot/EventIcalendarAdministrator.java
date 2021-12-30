@@ -120,16 +120,4 @@ public class EventIcalendarAdministrator {
         event.delete();
         return Response.status(Response.Status.ACCEPTED).entity(id).build();
     }
-
-    @PUT
-    @Path("/{id}")
-    @Transactional
-    public Response updateEventById(@PathParam("id") Long id, EventIcalendar newEventIcalendar){
-        EventIcalendar event = EventIcalendar.findById(id);
-        if(event == null){
-            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(id).build();
-        }
-        event.title = newEventIcalendar.title;
-        return Response.status(Response.Status.ACCEPTED).entity(id).build();
-    }
 }
