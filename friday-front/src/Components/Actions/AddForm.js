@@ -1,7 +1,5 @@
 import React from "react";
 import "./AddForm.css"
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 export default class AddForm extends React.Component{
 
@@ -44,14 +42,6 @@ export default class AddForm extends React.Component{
         this.setState({[event.currentTarget.id]: value});
     }
 
-    checkRequiredFields = () => {
-        return (this.state.title === '' || this.state.dayStart === '' || this.state.timeStart === '');
-    }
-
-    checkForm = () => {
-        (!this.checkRequiredFields()) ? toast.success("L'event "+ this.state.title +" a bien été crée") : toast.warn("Veuillez remplir tous les champs requis");
-    }
-
     render(){
         return(
             <div className="offcanvas offcanvas-start" tabIndex={-1} id="AddEvent" aria-labelledby="AddEventLabel">
@@ -92,7 +82,6 @@ export default class AddForm extends React.Component{
                         <div className="input-group mb-3">
                             <button type="submit" className="btn btn-dark text-warning form-control" onClick={this.checkForm}>confirmer<i className="ms-3 fa fa-check"></i></button>
                         </div>
-                        <ToastContainer />
                     </form>
                 </div>
             </div>

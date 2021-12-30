@@ -3,21 +3,6 @@ import CountDown from "./CountDown";
 
 export default class NextEvent extends React.Component {
 
-    //Trouve le prochain event qui va arriver
-    findNextEvent = (listEvents) => {
-        if(listEvents !== undefined){
-            var minEvent = listEvents[0];
-            for (let index = 0; index < listEvents.length; index++) {
-                if (listEvents[index]['dayStart'] === minEvent['dayStart']){ //Si les deux events commencent le même jour
-                    if (listEvents[index]['timeStart'] < minEvent['timeStart']) minEvent = listEvents[index]; //On compare à l'heure du début et on change la valeur de minEvent si le nouvel event est plus proche que l'autre
-                } else { //Sinon
-                    if (listEvents[index]['dayStart'] < minEvent['dayStart']) minEvent = listEvents[index];
-                }
-            }
-            return minEvent;
-        }
-    }
-
     dateConvertFormat = (date) => {
         return date.split('-').reverse().join('/');
     }
@@ -91,6 +76,6 @@ export default class NextEvent extends React.Component {
     ); }
 
     render() {
-        return (this.props.listEvents === undefined || this.props.listEvents.length === 0) ? <div>{this.renderEmptyEvents()}</div> : <div>{this.renderNextEvent(this.findNextEvent(this.props.listEvents))}</div>;
+        return (this.props.nextEvent === undefined || this.props.nextEvent.length === 0) ? <div>{this.renderEmptyEvents()}</div> : <div>{this.renderNextEvent(this.props.nextEvent)}</div>;
     }
 }

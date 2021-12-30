@@ -17,8 +17,8 @@ export default class EventCard extends React.Component{
                         <p className="card-text">{zevent.description === "" || zevent.description === null ? "no description" : zevent.description}</p>
                         <p className="card-text">{zevent.timeStart} - {zevent.timeEnd}</p>
                         <div className="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" className="btn btn-sm btn-warning rounded rounded-0" data-bs-toggle="offcanvas" data-bs-target={"#update"+title} aria-controls={"update"+title}>update</button>
-                            <button type="button" className="btn btn-sm btn-danger rounded rounded-0" data-bs-toggle="offcanvas" data-bs-target={"#delete"+title} aria-controls={"delete"+title}>delete</button>
+                            <button type="button" className="btn btn-warning rounded rounded-0" data-bs-toggle="offcanvas" data-bs-target={"#update"+title} aria-controls={"update"+title}>update</button>
+                            <button type="button" className="btn btn-danger rounded rounded-0" data-bs-toggle="offcanvas" data-bs-target={"#delete"+title} aria-controls={"delete"+title}>delete</button>
                         </div>
                     </div>
                     <div className="card-footer bg-dark text-warning">

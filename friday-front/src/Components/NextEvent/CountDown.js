@@ -7,7 +7,8 @@ export default class CountDown extends React.Component {
         timerDays : undefined,
         timerHours : undefined,
         timerMinutes : undefined,
-        timerSeconds : undefined
+        timerSeconds : undefined,
+        oldEvent : undefined 
     }
 
     convertEventToTime = (event) => {
@@ -17,7 +18,6 @@ export default class CountDown extends React.Component {
     origin = () => {
         return new Date(0);
     }
-
 
     startTimer = () => {
         this.interval = setInterval(() => {
@@ -33,16 +33,25 @@ export default class CountDown extends React.Component {
             const hours = countdown.format('HH') - origin.format('HH');
             const minutes = countdown.format('mm') - origin.format('mm');
             const seconds = countdown.format('ss') - origin.format('ss');
-            
-            if (days <= 0 || hours <= 0 || minutes <= 0 || seconds <= 0)  {
-                this.setState({days, hours, minutes, seconds})
+
+            this.setState({days, hours, minutes, seconds});
+            if(this.state.oldEvent !== this.props.event){
+                this.setState({oldEvent: this.props.event});
             }
-            
-        }, 1000);
+        }, 1000); 
     }
 
     componentDidMount = () => {
         this.startTimer();
+    }
+
+    componentDidUpdate = () =>{
+        if (this.state.days === 0 && this.state.hours === 0 && this.state.minutes === 0 && this.state.seconds === 0)  {
+            clearInterval(this.interval);
+            if(this.state.oldEvent !== this.props.event){
+                this.startTimer();
+            }
+        }
     }
 
     componentWillUnmount = () => {
