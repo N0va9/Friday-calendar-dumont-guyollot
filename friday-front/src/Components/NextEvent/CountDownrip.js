@@ -4,9 +4,9 @@ export default class CountDownrip extends React.Component{
     render(){
         let timer = this.generateTimer();
         return(
-            <div classname="timer-container">
-                <div className="timer">
-                    <div className="countdown">
+            <div>
+                <div>
+                    <div>
                         <p>{timer.timerDays} : {timer.timerHours} : {timer.timerMinutes}</p>
                     </div>
                 </div>
