@@ -66,24 +66,7 @@ public class EventGoogleAdministrator {
         return eventsGoogle.stream().toList();
     }
 
-    @POST
-    @Transactional
-    public Response synchronizedDatabase() throws GeneralSecurityException, IOException {
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                .setApplicationName(APPLICATION_NAME)
-                .build();
-        DateTime now = new DateTime(System.currentTimeMillis());
-        Events events = service.events().list("primary")
-                .setTimeMin(now)
-                .setOrderBy("startTime")
-                .setSingleEvents(true)
-                .execute();
-        List<Event> items = events.getItems();
-        if (items.isEmpty()) {
-            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-        }
-        EventGoogle.deleteAll();
+    private void googleMapper(List<Event> items){
         items.stream().map(item -> {
             EventGoogle event = new EventGoogle();
             event.title = item.getSummary();
@@ -98,7 +81,7 @@ public class EventGoogleAdministrator {
             var eventEnd = end.containsKey("date") ?
                     LocalDate.parse(end.getDate().toString()).atStartOfDay() :
                     LocalDateTime.ofInstant(Instant.parse(
-                            end.get("dateTime").toString()),
+                                    end.get("dateTime").toString()),
                             ZoneId.of(end.get("timeZone").toString())
                     );
             event.dayStart = eventStart.toLocalDate();
@@ -109,6 +92,31 @@ public class EventGoogleAdministrator {
             event.description = item.getDescription();
             return event;
         }).forEach(event -> event.persist());
+    }
+
+    private List<Event> googleGetter() throws GeneralSecurityException, IOException{
+        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+                .setApplicationName(APPLICATION_NAME)
+                .build();
+        DateTime now = new DateTime(System.currentTimeMillis());
+        Events events = service.events().list("primary")
+                .setTimeMin(now)
+                .setOrderBy("startTime")
+                .setSingleEvents(true)
+                .execute();
+        return events.getItems();
+    }
+
+    @POST
+    @Transactional
+    public Response synchronizedDatabase() throws GeneralSecurityException, IOException {
+        var items = googleGetter();
+        if (items.isEmpty()) {
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
+        EventGoogle.deleteAll();
+        googleMapper(items);
         return Response.status(Response.Status.CREATED).build();
     }
 
@@ -121,18 +129,6 @@ public class EventGoogleAdministrator {
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(id).build();
         }
         event.delete();
-        return Response.status(Response.Status.ACCEPTED).entity(id).build();
-    }
-
-    @PUT
-    @Path("/{id}")
-    @Transactional
-    public Response updateEventById(@PathParam("id") Long id, EventGoogle newEventGoogle){
-        EventGoogle event = EventGoogle.findById(id);
-        if(event == null){
-            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(id).build();
-        }
-        event.title = newEventGoogle.title;
         return Response.status(Response.Status.ACCEPTED).entity(id).build();
     }
 }
