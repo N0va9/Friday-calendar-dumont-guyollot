@@ -6,11 +6,11 @@ export default class EventCard extends React.Component{
 
     render(){
         let zevent = this.props.zevent;
-        let title = zevent.title.slice().replaceAll(" ", "");
+        let title = zevent.title.slice().replaceAll(" ", "")+zevent.id;
         if(zevent !== undefined){
             return(
-                <div className="card text-center">
-                    <div className="card-header bg-dark text-warning">
+                <div className="card text-center rounded-0">
+                    <div className="card-header bg-dark text-warning rounded-0">
                         <h6>{zevent.title}</h6>
                     </div>
                     <div className="card-body">

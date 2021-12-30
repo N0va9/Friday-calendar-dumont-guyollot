@@ -2,6 +2,7 @@ import React from "react";
 import Calendar from "./Components/Calendar/Calendar";
 import Daily from "./Components/Daily/Daily";
 import Buttons from "./Components/Actions/Buttons";
+import NextEvent from "./Components/NextEvent/NextEvent";
 
 class App extends React.Component{
 
@@ -104,7 +105,6 @@ class App extends React.Component{
           alert("Not Acceptable modification !");
           break;
         default :
-        console.log(res);
           this.getBase("personal");
           break;
       }
@@ -169,10 +169,11 @@ class App extends React.Component{
 
   generateCalendarScreen = () => { return (
       <div className="App container">
-        <h1 className="text-center mt-2 mb-2"><span className="text-black">Hello, I</span><span className="text-warning"> am Friday !</span></h1>
-        <Daily events={this.generateDailyEvents() } currentDate={this.state.currentDate} />
+        <h1 className="text-center mt-2 mb-2 text-dark">Hello, I am <span className="text-warning"> Friday </span> !</h1>
+        <NextEvent listEvents={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
+        <Daily events={this.generateDailyEvents() } currentDate={this.state.currentDate} update={this.updateEvent} delete={this.deleteEvent}/>
         <Buttons postPersonal={this.postPersonal}/>
-        <Calendar eventsPersonal={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
+        <Calendar events={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
       </div>
   );}
 

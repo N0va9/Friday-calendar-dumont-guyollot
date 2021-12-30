@@ -78,11 +78,13 @@ class Calendar extends React.Component{
         return calendarDays;
     }
 
-    headerCalendar = () => { return(
+    headerCalendar = () => {
+        let i = 0;
+        return(
             <div className='row d-none d-sm-none d-lg-flex p-3 mt-3 bg-dark text-warning'>
                 <CurrentMonthAndYear currentDate = {this.props.currentDate}/>
                 {DAYS.map((element, e) => {
-                    return (<h5 className="col-sm p-1 text-center">{element}</h5>)
+                    return (<h5 className="col-sm p-1 text-center" key={i++}>{element}</h5>)
                 })}
             </div>
         );
@@ -107,7 +109,7 @@ class Calendar extends React.Component{
     ) ;}
 
     render() { return(
-            <div>
+            <div className='border-top pt-1'>
                 {this.drawCalendar()}
             </div>
     ); }
