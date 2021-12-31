@@ -8,42 +8,67 @@ export default class CountDown extends React.Component {
         hours : undefined,
         minutes : undefined,
         seconds : undefined,
-        oldEvent : undefined 
+        oldEvent : undefined,
+        inEvent : false
+    }
+
+    setEvent = (date, tab) => {
+        date.setHours(tab[0]);
+        date.setMinutes(tab[1]);
+        date.setSeconds(tab[2]);
+        return date;
+    }
+
+    eventToDateEnd = (event) => {
+        let eventDate = new Date(event.dayEnd);
+        let eventDateTime = event.timeEnd.slice().split(":");
+
+        return this.setEvent(eventDate, eventDateTime);
+    }
+
+    eventToDateStart = (event) => {
+        let eventDate = new Date(event.dayStart);
+        let eventDateTime = event.timeStart.slice().split(":");
+        return this.setEvent(eventDate, eventDateTime);
+    }
+
+
+    setTimer = (then, now) => {
+        const days = then.diff(now, 'days');
+        const hours = then.diff(now, 'hours') % 24;
+        const minutes = then.diff(now, 'minutes') % 60;
+        const seconds = then.diff(now, 'seconds') % 60;
+
+        this.setState({days, hours, minutes, seconds});
+        if(this.state.oldEvent !== this.props.event){
+            this.setState({oldEvent: this.props.event});
+        }
     }
 
     startTimer = () => {
         this.interval = setInterval(() => {
             const then = Moment(this.eventToDateStart(this.props.event));
             const now = Moment();
-
-            const days = then.diff(now, 'days');
-            const hours = then.diff(now, 'hours') % 24;
-            const minutes = then.diff(now, 'minutes') % 60;
-            const seconds = then.diff(now, 'seconds') % 60;
-
-            this.setState({days, hours, minutes, seconds});
-            if(this.state.oldEvent !== this.props.event){
-                this.setState({oldEvent: this.props.event});
-            }
+            
+            this.setTimer(then, now);
+            this.props.changeState(false);
         }, 1000); 
     }
 
-    eventToDateEnd = (event) => {
-        let eventDate = new Date(event.dayEnd);
-        let eventDateTime = event.timeEnd.slice().split(":");
-        eventDate.setHours(eventDateTime[0]);
-        eventDate.setMinutes(eventDateTime[1]);
-        eventDate.setSeconds(eventDateTime[2]);
-        return eventDate;
+    startTimerEnd = () => {
+        this.interval = setInterval(() => {
+            const then = Moment(this.eventToDateEnd(this.props.event));
+            const now = Moment();
+
+            this.setTimer(then, now);
+            this.props.changeState(true);
+        }, 1000); 
     }
 
-    eventToDateStart = (event) => {
-        let eventDate = new Date(event.dayStart);
-        let eventDateTime = event.timeStart.slice().split(":");
-        eventDate.setHours(eventDateTime[0]);
-        eventDate.setMinutes(eventDateTime[1]);
-        eventDate.setSeconds(eventDateTime[2]);
-        return eventDate;
+    
+    InEvent = () => {
+        let event = this.props.event;
+        return (this.eventToDateStart(event).valueOf() < (new Date()).valueOf() && (new Date()).valueOf() < this.eventToDateEnd(event).valueOf());
     }
 
     startDeleteTimer = () => {
@@ -64,15 +89,21 @@ export default class CountDown extends React.Component {
         }
     }
 
+
     componentDidUpdate = () =>{
         if (this.state.days <= 0 && this.state.hours <= 0 && this.state.minutes <= 0 && this.state.seconds <= 0)  {
             clearInterval(this.interval);
+            if(this.InEvent){
+                this.startTimerEnd();
+            } 
             if(this.state.oldEvent !== this.props.event && this.state.oldEvent !== undefined){
+                clearInterval(this.interval);
                 this.startTimer();
                 this.startDeleteTimer();
             }
         }
     }
+
 
     componentWillUnmount = () => {
         if(this.interval) clearInterval(this.interval);
@@ -98,26 +129,33 @@ export default class CountDown extends React.Component {
         let textArray = ["JOURS", "HEURES", "MINUTES", "SECONDES"]
         let i = 0;
         return(
-            <div>
-                <div className="d-flex align-items-center justify-content-center flex-wrap text-white row">
+                <h2 className="d-flex align-items-center justify-content-center flex-wrap text-white row">
                     {valuesArray.map(value => {
                         return (
                             <div className="d-flex align-items-center justify-content-center flex-column col-sm-3" key={i++}>
-                                {value}
-                                <span className="fs-6">{(value>2)?textArray[i]:textArray[i].substring(0, textArray[i].length - 1)}</span>
-                                {/* {this.SVGCircle(radiusArray[i])} */}
+                                {this.SVGCircle(radiusArray[i], value, textArray[i])}                             
+                                <h6 >{(value>=2) ? textArray[i] : textArray[i].substring(0, textArray[i].length - 1)}</h6>
                             </div>
                         );
                     })}
-                </div>
-            </div>
+                </h2>
         );
     }
 
+    changeColor = (textArray) => {
+        if(this.props.CountDownInEvent) return "#dc3545";
+        if(textArray === "SECONDES") return "#ffc107";
+        else {
+            return "#f8f9fa";
+        }
+        
+    } 
+
     
-    SVGCircle = ( radius ) => {
+    SVGCircle = ( radius, value, textArray) => {
         return (<svg className="countdown-svg">
-            <path fill = "none" stroke="#fff" strokeWidth="4" d={this.drawArc(50 , 100, 48, 0, radius)}/>
+                    <text x="35" y="65" fill={this.changeColor(textArray)}> {(value < 10) ? '0' + value : value}</text>
+            <path fill = "none" stroke={this.changeColor(textArray)} strokeWidth="4" d={this.drawArc(50 , 55, 30, 0, radius)}/>
         </svg>);
     }
 
