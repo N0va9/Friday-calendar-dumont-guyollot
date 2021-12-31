@@ -11,6 +11,26 @@ export default class CountDown extends React.Component {
         oldEvent : undefined 
     }
 
+    setEvent = (date, tab) => {
+        date.setHours(tab[0]);
+        date.setMinutes(tab[1]);
+        date.setSeconds(tab[2]);
+        return date;
+    }
+
+    eventToDateEnd = (event) => {
+        let eventDate = new Date(event.dayEnd);
+        let eventDateTime = event.timeEnd.slice().split(":");
+
+        return this.setEvent(eventDate, eventDateTime);
+    }
+
+    eventToDateStart = (event) => {
+        let eventDate = new Date(event.dayStart);
+        let eventDateTime = event.timeStart.slice().split(":");
+        return this.setEvent(eventDate, eventDateTime);
+    }
+
     startTimer = () => {
         this.interval = setInterval(() => {
             const then = Moment(this.eventToDateStart(this.props.event));
@@ -21,29 +41,13 @@ export default class CountDown extends React.Component {
             const minutes = then.diff(now, 'minutes') % 60;
             const seconds = then.diff(now, 'seconds') % 60;
 
+            console.log("test");
+
             this.setState({days, hours, minutes, seconds});
             if(this.state.oldEvent !== this.props.event){
                 this.setState({oldEvent: this.props.event});
             }
         }, 1000); 
-    }
-
-    eventToDateEnd = (event) => {
-        let eventDate = new Date(event.dayEnd);
-        let eventDateTime = event.timeEnd.slice().split(":");
-        eventDate.setHours(eventDateTime[0]);
-        eventDate.setMinutes(eventDateTime[1]);
-        eventDate.setSeconds(eventDateTime[2]);
-        return eventDate;
-    }
-
-    eventToDateStart = (event) => {
-        let eventDate = new Date(event.dayStart);
-        let eventDateTime = event.timeStart.slice().split(":");
-        eventDate.setHours(eventDateTime[0]);
-        eventDate.setMinutes(eventDateTime[1]);
-        eventDate.setSeconds(eventDateTime[2]);
-        return eventDate;
     }
 
     startDeleteTimer = () => {
@@ -102,7 +106,7 @@ export default class CountDown extends React.Component {
                         return (
                             <div className="d-flex align-items-center justify-content-center flex-column col-sm-3" key={i++}>
                                 {value}
-                                <span className="fs-6">{(value>2)?textArray[i]:textArray[i].substring(0, textArray[i].length - 1)}</span>
+                                <span className="fs-6">{(value>=2)?textArray[i]:textArray[i].substring(0, textArray[i].length - 1)}</span>
                                 {/* {this.SVGCircle(radiusArray[i])} */}
                             </div>
                         );
