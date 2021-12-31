@@ -17,14 +17,25 @@ class App extends React.Component{
   }
 
   componentDidMount = () => {
+    this.refresh();
+  }
+
+  refresh = () => {
     this.getBase("personal");
     this.getBase("icalendar");
     this.getBase("google");
   }
 
   getBase = (base) => {
-    fetch("/"+base, {}).then(response => {
-      if(response.ok === true){
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+    fetch("/"+base, requestOptions).then(response => {
+      if(response.ok){
         return response.json();
       } else {
         this.setState({proxyGood : response.status});
@@ -109,7 +120,7 @@ class App extends React.Component{
     fetch("/personal/"+id, requestOptions).then((res) => {
       switch(res.status){
         case 406 :
-          alert("Not Acceptable modification !");
+          toast.warn("Modification non acceptable !");
           break;
         default :
           this.getBase("personal");
@@ -128,7 +139,7 @@ class App extends React.Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch("/"+path+"/"+id, requestOptions).then(this.getBase(path));
+    fetch("/"+path+"/"+id, requestOptions).then(this.refresh());
   }
 
   deleteEvent = (event) => {
@@ -138,6 +149,8 @@ class App extends React.Component{
       this.delete("icalendar", event.id);
     }else if(this.state.google.includes(event)){
       this.delete("google", event.id);
+    }else{
+      this.deleteEvent(event);
     }
     toast.success("L'event "+event.title+" a bien été supprimé");
   }
