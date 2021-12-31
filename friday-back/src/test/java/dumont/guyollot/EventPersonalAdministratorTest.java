@@ -2,10 +2,7 @@ package dumont.guyollot;
 import dumont_guyollot.EventPersonal;
 import dumont_guyollot.EventPersonalAdministrator;
 import io.quarkus.test.junit.QuarkusTest;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
@@ -22,7 +19,7 @@ public class EventPersonalAdministratorTest {
 
     @Test
     @Order(1)
-    public void shouldReturnEmptyListOnGET(){
+    public void shouldReturnEmptyListPersonalOnGET(){
         EventPersonalAdministrator admin = new EventPersonalAdministrator();
         assertTrue(admin.getEventsList().isEmpty());
     }
@@ -138,5 +135,12 @@ public class EventPersonalAdministratorTest {
         newEvent.timeStart = event.timeStart;
         long id = 1000;
         assertEquals(Response.status(Response.Status.NOT_ACCEPTABLE).entity(event).build().getStatus(), admin.updateEventById(id, newEvent).getStatus());
+    }
+
+    @Test
+    @Transactional
+    @Order(10)
+    public void cleanTestsPersonal(){
+        EventPersonal.deleteAll();
     }
 }

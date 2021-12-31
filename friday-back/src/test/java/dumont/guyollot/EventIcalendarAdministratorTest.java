@@ -1,8 +1,12 @@
 package dumont.guyollot;
 
+import dumont_guyollot.EventIcalendar;
 import dumont_guyollot.EventIcalendarAdministrator;
 import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
@@ -10,10 +14,19 @@ import javax.ws.rs.core.Response;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EventIcalendarAdministratorTest {
 
     @Test
+    @Order(1)
+    public void shouldReturnEmptyListIcalendarOnGET(){
+        EventIcalendarAdministrator admin = new EventIcalendarAdministrator();
+        assertTrue(admin.getEventsList().isEmpty());
+    }
+
+    @Test
     @Transactional
+    @Order(2)
     public void shouldAddEventOnPOSTWithPath(){
         EventIcalendarAdministrator admin = new EventIcalendarAdministrator();
         String jsonPath =
@@ -27,6 +40,7 @@ public class EventIcalendarAdministratorTest {
 
     @Test
     @Transactional
+    @Order(3)
     public void shouldReturnNoContentEventOnPOSTWithEmptyFileWithPath(){
         EventIcalendarAdministrator admin = new EventIcalendarAdministrator();
         String jsonPath = """
@@ -39,6 +53,7 @@ public class EventIcalendarAdministratorTest {
 
     @Test
     @Transactional
+    @Order(4)
     public void shouldReturnNotFoundEventOnPOSTWithWringJSONWithPath(){
         EventIcalendarAdministrator admin = new EventIcalendarAdministrator();
         String jsonPath =
@@ -52,6 +67,7 @@ public class EventIcalendarAdministratorTest {
 
     @Test
     @Transactional
+    @Order(5)
     public void shouldAddEventOnPOSTWithLink(){
         EventIcalendarAdministrator admin = new EventIcalendarAdministrator();
         String jsonPath =
@@ -65,6 +81,7 @@ public class EventIcalendarAdministratorTest {
 
     @Test
     @Transactional
+    @Order(6)
     public void shouldReturnNoContentEventOnPOSTWithWrongLink(){
         EventIcalendarAdministrator admin = new EventIcalendarAdministrator();
         String jsonPath = """
@@ -77,6 +94,7 @@ public class EventIcalendarAdministratorTest {
 
     @Test
     @Transactional
+    @Order(7)
     public void shouldReturnNotFoundEventOnPOSTWithWringJSONWithLink(){
         EventIcalendarAdministrator admin = new EventIcalendarAdministrator();
         String jsonLink =
@@ -89,13 +107,8 @@ public class EventIcalendarAdministratorTest {
     }
 
     @Test
-    public void shouldReturnEmptyListOnGET(){
-        EventIcalendarAdministrator admin = new EventIcalendarAdministrator();
-        assertTrue(admin.getEventsList().isEmpty());
-    }
-
-    @Test
     @Transactional
+    @Order(8)
     public void shouldReturnNotEmptyOnPOSTThenGET(){
         EventIcalendarAdministrator admin = new EventIcalendarAdministrator();
         String jsonPath =
@@ -109,6 +122,7 @@ public class EventIcalendarAdministratorTest {
     }
     @Test
     @Transactional
+    @Order(9)
     public void shouldDeleteEventOnPOSTThenGET(){
         EventIcalendarAdministrator admin = new EventIcalendarAdministrator();
         String jsonPath =
@@ -126,6 +140,7 @@ public class EventIcalendarAdministratorTest {
 
     @Test
     @Transactional
+    @Order(10)
     public void shouldNotDeleteEventOnPOSTThenGETWithWrongId(){
         EventIcalendarAdministrator admin = new EventIcalendarAdministrator();
         String jsonPath =
@@ -139,5 +154,12 @@ public class EventIcalendarAdministratorTest {
         Long id = list.get(0).id + 100_000_000;
         admin.deleteEventById(id);
         assertEquals(Response.status(Response.Status.NOT_ACCEPTABLE).entity(id).build().getStatus(), admin.deleteEventById(id).getStatus());
+    }
+
+    @Test
+    @Transactional
+    @Order(11)
+    public void cleanTestsIcalendar(){
+        EventIcalendar.deleteAll();
     }
 }

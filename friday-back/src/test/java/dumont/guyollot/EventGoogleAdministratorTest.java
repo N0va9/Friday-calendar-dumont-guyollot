@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @QuarkusTest
 public class EventGoogleAdministratorTest {
     @Test
-    public void shouldReturnEmptyListOnGET(){
+    public void shouldReturnEmptyListGoogleOnGET(){
         EventGoogleAdministrator admin = new EventGoogleAdministrator();
         assertTrue(admin.getEventsList().isEmpty());
     }
