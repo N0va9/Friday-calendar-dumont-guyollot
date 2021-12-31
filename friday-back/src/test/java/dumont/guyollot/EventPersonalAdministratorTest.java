@@ -31,7 +31,7 @@ public class EventPersonalAdministratorTest {
         EventPersonalAdministrator admin = new EventPersonalAdministrator();
         EventPersonal event = new EventPersonal();
         event.title = "test";
-        event.dayStart = LocalDate.of(2021, 12, 31);
+        event.dayStart = LocalDate.of(3000, 12, 31);
         event.timeStart = LocalTime.of(15, 0, 0);
         admin.addEvent(event);
         admin.deleteEventById(event.id);
@@ -45,7 +45,7 @@ public class EventPersonalAdministratorTest {
         EventPersonalAdministrator admin = new EventPersonalAdministrator();
         EventPersonal event = new EventPersonal();
         event.title = "test";
-        event.dayStart = LocalDate.of(2021, 12, 31);
+        event.dayStart = LocalDate.of(3000, 12, 31);
         event.timeStart = LocalTime.of(15, 0, 0);
         assertEquals(Response.status(Response.Status.CREATED).entity(event).build().getStatus(), admin.addEvent(event).getStatus());
     }
@@ -69,7 +69,7 @@ public class EventPersonalAdministratorTest {
         EventPersonalAdministrator admin = new EventPersonalAdministrator();
         EventPersonal event = new EventPersonal();
         event.title = "test";
-        event.dayStart = LocalDate.of(2021, 12, 31);
+        event.dayStart = LocalDate.of(3000, 12, 31);
         event.timeStart = LocalTime.of(15, 0, 0);
         admin.addEvent(event);
         assertTrue(admin.getEventsList().contains(event));
@@ -82,7 +82,7 @@ public class EventPersonalAdministratorTest {
         EventPersonalAdministrator admin = new EventPersonalAdministrator();
         EventPersonal event = new EventPersonal();
         event.title = "test";
-        event.dayStart = LocalDate.of(2021, 12, 31);
+        event.dayStart = LocalDate.of(3000, 12, 31);
         event.timeStart = LocalTime.of(15, 0, 0);
         admin.addEvent(event);
         assertEquals(Response.status(Response.Status.ACCEPTED).entity(event.id).build().getStatus(), admin.deleteEventById(event.id).getStatus());
@@ -109,7 +109,7 @@ public class EventPersonalAdministratorTest {
         EventPersonalAdministrator admin = new EventPersonalAdministrator();
         EventPersonal event = new EventPersonal();
         event.title = "test";
-        event.dayStart = LocalDate.of(2021, 12, 31);
+        event.dayStart = LocalDate.of(3000, 12, 31);
         event.timeStart = LocalTime.of(15, 0, 0);
         admin.addEvent(event);
         EventPersonal newEvent = new EventPersonal();

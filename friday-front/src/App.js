@@ -61,7 +61,7 @@ class App extends React.Component{
           toast.warn("Event non adéquat");
           break;
         default :
-        toast.success("L'event "+ obj.title +" a bien été crée");
+          toast.success("L'event "+ obj.title +" a bien été crée");
           this.getBase("personal");
           break;
       }
@@ -129,7 +129,7 @@ class App extends React.Component{
     });
   }
 
-  delete  = (path, id) => {
+  delete  = (path, event) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     var raw = {};
@@ -139,30 +139,30 @@ class App extends React.Component{
       body: raw,
       redirect: 'follow'
     };
-    fetch("/"+path+"/"+id, requestOptions).then(this.refresh());
+    fetch("/"+path+"/"+event.id, requestOptions).then(() => {
+      this.refresh();
+      toast.success("L'event "+event.title+" a bien été supprimé");
+    });
   }
 
   deleteEvent = (event) => {
     if(this.state.personal.includes(event)){
-      this.delete("personal", event.id);
+      this.delete("personal", event);
     }else if(this.state.icalendar.includes(event)){
-      this.delete("icalendar", event.id);
+      this.delete("icalendar", event);
     }else if(this.state.google.includes(event)){
-      this.delete("google", event.id);
-    }else{
-      this.deleteEvent(event);
+      this.delete("google", event);
     }
-    toast.success("L'event "+event.title+" a bien été supprimé");
   }
 
   updateEvent = (id, oldEvent, obj) => {
     if(this.state.personal.includes(oldEvent)){
       this.put(id, obj);
     }else if(this.state.icalendar.includes(oldEvent)){
-      this.delete("icalendar", oldEvent.id);
+      this.delete("icalendar", oldEvent);
       this.postPersonal(obj);
     }else if(this.state.google.includes(oldEvent)){
-      this.delete("google", oldEvent.id);
+      this.delete("google", oldEvent);
       this.postPersonal(obj);
     }
     toast.success("L'event "+ obj.title +" a bien été modifiée");
