@@ -11,10 +11,6 @@ export default class CountDown extends React.Component {
         oldEvent : undefined 
     }
 
-    convertEventToTime = (event) => {
-        return new Date(event.dayStart+"T"+event.timeStart);
-    }
-
     startTimer = () => {
         this.interval = setInterval(() => {
             const then = Moment(this.eventToDateStart(this.props.event));
