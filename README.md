@@ -31,6 +31,10 @@ The project is separated into two main parts :
 - You can synchronize friday with your google account, but since the whole project is still in test and google is really lazy ... I mean security is the google's main priority, we can't get the project to valid status in time. So if you want to synchronize your google calendar with friday (or if you are Mr FORAX) please send us an email in order to grant you an access.
 - The Three panels described earlier works finely.
 
+## Build and Dev Run
+- If you want to run the project in ***DEV MODE***, create a maven configuration with "compile quarkus:dev" in the command line or run ./mvnw compile quarkus:dev, then run npm start in friday-front.
+- If you want to build the project, run the maven configuration only with "quarkus:build" or run ./mvnw quarkus:build, launch quarkus-run.jar in friday-back\target\quarkus-app then go to localhost:8080 in your browser.
+
 ## Support
 Here are our emails :
 - Thomas Dumont : <thomas2dumont@gmail.com>
