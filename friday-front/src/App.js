@@ -195,7 +195,7 @@ class App extends React.Component{
   generateCalendarScreen = () => { return (
       <div className="App container">
         <h1 className="text-center mt-2 mb-2 text-dark">Bonjour, je suis <span className="text-warning"> Friday </span> !</h1>
-        <NextEvent nextEvent={this.findNextEvent()}/>
+        <NextEvent nextEvent={this.findNextEvent()} deleteEvent={this.deleteEvent}/>
         <Daily events={this.generateDailyEvents() } currentDate={this.state.currentDate} update={this.updateEvent} delete={this.deleteEvent}/>
         <Buttons postPersonal={this.postPersonal} postGoogle={this.postGoogle} postIcalendar={this.postIcalendar}/>
         <Calendar events={[...this.state.personal, ...this.state.google, ...this.state.icalendar]} currentDate={this.state.currentDate}/>
