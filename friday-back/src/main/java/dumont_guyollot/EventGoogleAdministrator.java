@@ -66,32 +66,30 @@ public class EventGoogleAdministrator {
         return eventsGoogle.stream().toList();
     }
 
-    private void googleMapper(List<Event> items){
-        items.stream().map(item -> {
-            EventGoogle event = new EventGoogle();
-            event.title = item.getSummary();
-            var start = item.getStart();
-            var end = item.getEnd();
-            var eventStart = start.containsKey("date") ?
-                    LocalDate.parse(start.getDate().toString()).atStartOfDay() :
-                    LocalDateTime.ofInstant(
-                            Instant.parse(start.get("dateTime").toString()),
-                            ZoneId.of(start.get("timeZone").toString())
-                    );
-            var eventEnd = end.containsKey("date") ?
-                    LocalDate.parse(end.getDate().toString()).atStartOfDay() :
-                    LocalDateTime.ofInstant(Instant.parse(
-                                    end.get("dateTime").toString()),
-                            ZoneId.of(end.get("timeZone").toString())
-                    );
-            event.dayStart = eventStart.toLocalDate();
-            event.dayEnd = eventEnd.toLocalDate();
-            event.timeStart = eventStart.toLocalTime();
-            event.timeEnd = eventEnd.toLocalTime();
-            event.localisation = item.getLocation();
-            event.description = item.getDescription();
-            return event;
-        }).forEach(event -> event.persist());
+    private EventGoogle googleMapper(Event item){
+        EventGoogle event = new EventGoogle();
+        event.title = item.getSummary();
+        var start = item.getStart();
+        var end = item.getEnd();
+        var eventStart = start.containsKey("date") ?
+                LocalDate.parse(start.getDate().toString()).atStartOfDay() :
+                LocalDateTime.ofInstant(
+                        Instant.parse(start.get("dateTime").toString()),
+                        ZoneId.of(start.get("timeZone").toString())
+                );
+        var eventEnd = end.containsKey("date") ?
+                LocalDate.parse(end.getDate().toString()).atStartOfDay() :
+                LocalDateTime.ofInstant(Instant.parse(
+                                end.get("dateTime").toString()),
+                        ZoneId.of(end.get("timeZone").toString())
+                );
+        event.dayStart = eventStart.toLocalDate();
+        event.dayEnd = eventEnd.toLocalDate();
+        event.timeStart = eventStart.toLocalTime();
+        event.timeEnd = eventEnd.toLocalTime();
+        event.localisation = item.getLocation();
+        event.description = item.getDescription();
+        return event;
     }
 
     private List<Event> googleGetter() throws GeneralSecurityException, IOException{
@@ -116,7 +114,7 @@ public class EventGoogleAdministrator {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
         EventGoogle.deleteAll();
-        googleMapper(items);
+        items.stream().map(this::googleMapper).forEach(event -> event.persist());
         return Response.status(Response.Status.CREATED).build();
     }
 
