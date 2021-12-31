@@ -55,12 +55,10 @@ export default class NextEvent extends React.Component {
                 <div className="col-lg-5 align-self-stretch mt-3">
                     <div className="card text-center bg-dark rounded-0 ">
                         <div className="card-header text-warning">
-                            <h3>{(this.state.CountDownInEvent) ? <span className="red">Event en cours</span> :"Temps restant avant le prochain évent"}</h3>
+                            <h3>{(this.state.CountDownInEvent) ? <span className="text-danger">Event en cours</span> :"Temps restant avant le prochain évent"}</h3>
                         </div>
                         <div className="card-body">
-                            <h2 className="card-title">
-                                <CountDown event = {newEvent} deleteEvent={this.props.deleteEvent} changeState={this.changeState}/>
-                            </h2>
+                                <CountDown event = {newEvent} deleteEvent={this.props.deleteEvent} changeState={this.changeState} CountDownInEvent={this.state.CountDownInEvent}/>
                         </div>
                     </div>
                 </div>

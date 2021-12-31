@@ -8,7 +8,8 @@ export default class CountDown extends React.Component {
         hours : undefined,
         minutes : undefined,
         seconds : undefined,
-        oldEvent : undefined
+        oldEvent : undefined,
+        inEvent : false
     }
 
     setEvent = (date, tab) => {
@@ -94,7 +95,7 @@ export default class CountDown extends React.Component {
             clearInterval(this.interval);
             if(this.InEvent){
                 this.startTimerEnd();
-            }
+            } 
             if(this.state.oldEvent !== this.props.event && this.state.oldEvent !== undefined){
                 clearInterval(this.interval);
                 this.startTimer();
@@ -128,26 +129,33 @@ export default class CountDown extends React.Component {
         let textArray = ["JOURS", "HEURES", "MINUTES", "SECONDES"]
         let i = 0;
         return(
-            <div>
-                <div className="d-flex align-items-center justify-content-center flex-wrap text-white row">
+                <h2 className="d-flex align-items-center justify-content-center flex-wrap text-white row">
                     {valuesArray.map(value => {
                         return (
                             <div className="d-flex align-items-center justify-content-center flex-column col-sm-3" key={i++}>
-                                {value}
-                                <span className="fs-6">{(value>=2)?textArray[i]:textArray[i].substring(0, textArray[i].length - 1)}</span>
-                                {/* {this.SVGCircle(radiusArray[i])} */}
+                                {this.SVGCircle(radiusArray[i], value, textArray[i])}                             
+                                <h6 >{(value>=2) ? textArray[i] : textArray[i].substring(0, textArray[i].length - 1)}</h6>
                             </div>
                         );
                     })}
-                </div>
-            </div>
+                </h2>
         );
     }
 
+    changeColor = (textArray) => {
+        if(this.props.CountDownInEvent) return "#dc3545";
+        if(textArray === "SECONDES") return "#ffc107";
+        else {
+            return "#f8f9fa";
+        }
+        
+    } 
+
     
-    SVGCircle = ( radius ) => {
+    SVGCircle = ( radius, value, textArray) => {
         return (<svg className="countdown-svg">
-            <path fill = "none" stroke="#fff" strokeWidth="4" d={this.drawArc(50 , 100, 48, 0, radius)}/>
+                    <text x="35" y="65" fill={this.changeColor(textArray)}> {(value < 10) ? '0' + value : value}</text>
+            <path fill = "none" stroke={this.changeColor(textArray)} strokeWidth="4" d={this.drawArc(50 , 55, 30, 0, radius)}/>
         </svg>);
     }
 
