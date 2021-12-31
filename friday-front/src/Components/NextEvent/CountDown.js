@@ -4,10 +4,10 @@ import "./CountDown.css";
 
 export default class CountDown extends React.Component {
     state = {
-        days : 0,
-        hours : 0,
-        minutes : 0,
-        seconds : 0,
+        days : undefined,
+        hours : undefined,
+        minutes : undefined,
+        seconds : undefined,
         oldEvent : undefined 
     }
 
@@ -55,8 +55,7 @@ export default class CountDown extends React.Component {
             let eventEnd = this.eventToDateEnd(this.props.event);
             if(eventEnd.valueOf() <= new Date().valueOf()){
                 clearInterval(this.endInterval);
-                this.props.deleteEvent(this.state.oldEvent);
-                this.setState({oldEvent: this.props.event});
+                this.props.deleteEvent(this.state.oldEvent);                
             }
         }, 1000);
     }
@@ -85,8 +84,11 @@ export default class CountDown extends React.Component {
     }
 
     render() {
-        const { days, hours, minutes, seconds } = this.state;
-        return (true) ? <div>{this.drawCountdown(days, hours, minutes, seconds)}</div>: null;   
+        const days = this.state.days !== undefined ? this.state.days : 0;
+        const hours = this.state.hours !== undefined ? this.state.hours : 0;
+        const minutes = this.state.minutes !== undefined ? this.state.minutes : 0;
+        const seconds = this.state.seconds !== undefined ? this.state.seconds : 0;
+        return (<div>{this.drawCountdown(days, hours, minutes, seconds)}</div> );
     }
     
     drawCountdown = (days, hours, minutes, seconds) => {
