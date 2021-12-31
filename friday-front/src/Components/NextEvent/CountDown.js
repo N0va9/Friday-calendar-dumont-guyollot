@@ -4,10 +4,10 @@ import "./CountDown.css";
 
 export default class CountDown extends React.Component {
     state = {
-        timerDays : undefined,
-        timerHours : undefined,
-        timerMinutes : undefined,
-        timerSeconds : undefined,
+        days : 0,
+        hours : 0,
+        minutes : 0,
+        seconds : 0,
         oldEvent : undefined 
     }
 
@@ -41,21 +41,56 @@ export default class CountDown extends React.Component {
         }, 1000); 
     }
 
+    eventToDateEnd = (event) => {
+        let eventDate = new Date(event.dayEnd);
+        let eventDateTime = event.timeEnd.slice().split(":");
+        eventDate.setHours(eventDateTime[0]);
+        eventDate.setMinutes(eventDateTime[1]);
+        eventDate.setSeconds(eventDateTime[2]);
+        return eventDate;
+    }
+
+    eventToDateStart = (event) => {
+        let eventDate = new Date(event.dayStart);
+        let eventDateTime = event.timeStart.slice().split(":");
+        eventDate.setHours(eventDateTime[0]);
+        eventDate.setMinutes(eventDateTime[1]);
+        eventDate.setSeconds(eventDateTime[2]);
+        return eventDate;
+    }
+
+    startDeleteTimer = () => {
+        this.endInterval = setInterval(() => {
+            let eventEnd = this.eventToDateEnd(this.props.event);
+            if(eventEnd.valueOf() <= new Date().valueOf()){
+                clearInterval(this.endInterval);
+                this.props.deleteEvent(this.state.oldEvent);
+                this.setState({oldEvent: this.props.event});
+            }
+        }, 1000);
+    }
+
     componentDidMount = () => {
-        this.startTimer();
+        let eventStart = this.eventToDateStart(this.props.event);
+        if(eventStart.valueOf() > new Date().valueOf()){
+            this.startTimer();
+            this.startDeleteTimer();
+        }
     }
 
     componentDidUpdate = () =>{
-        if (this.state.days === 0 && this.state.hours === 0 && this.state.minutes === 0 && this.state.seconds === 0)  {
+        if (this.state.days <= 0 && this.state.hours <= 0 && this.state.minutes <= 0 && this.state.seconds <= 0)  {
             clearInterval(this.interval);
-            if(this.state.oldEvent !== this.props.event){
+            if(this.state.oldEvent !== this.props.event && this.state.oldEvent !== undefined){
                 this.startTimer();
+                this.startDeleteTimer();
             }
         }
     }
 
     componentWillUnmount = () => {
         if(this.interval) clearInterval(this.interval);
+        if(this.endInterval) clearInterval(this.endInterval);
     }
 
     render() {

@@ -52,7 +52,7 @@ export default class NextEvent extends React.Component {
                         </div>
                         <div className="card-body">
                             <h2 className="card-title">
-                                <CountDown event = {newEvent}/>
+                                <CountDown event = {newEvent} deleteEvent={this.props.deleteEvent}/>
                             </h2>
                         </div>
                     </div>
