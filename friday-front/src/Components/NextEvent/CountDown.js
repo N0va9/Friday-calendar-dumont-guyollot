@@ -15,24 +15,15 @@ export default class CountDown extends React.Component {
         return new Date(event.dayStart+"T"+event.timeStart);
     }
 
-    origin = () => {
-        return new Date(0);
-    }
-
     startTimer = () => {
         this.interval = setInterval(() => {
-            const { event } = this.props;
-
-            const then = Moment(this.convertEventToTime(event));
+            const then = Moment(this.eventToDateStart(this.props.event));
             const now = Moment();
-            
-            const countdown =  Moment(then - now);
-            const origin = Moment(this.origin());
-            
-            const days = countdown.format('DD') - origin.format('DD');
-            const hours = countdown.format('HH') - origin.format('HH');
-            const minutes = countdown.format('mm') - origin.format('mm');
-            const seconds = countdown.format('ss') - origin.format('ss');
+
+            const days = then.diff(now, 'days');
+            const hours = then.diff(now, 'hours') % 24;
+            const minutes = then.diff(now, 'minutes') % 60;
+            const seconds = then.diff(now, 'seconds') % 60;
 
             this.setState({days, hours, minutes, seconds});
             if(this.state.oldEvent !== this.props.event){
