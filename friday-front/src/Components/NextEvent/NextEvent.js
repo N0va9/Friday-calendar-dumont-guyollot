@@ -2,6 +2,9 @@ import React from "react";
 import CountDown from "./CountDown";
 
 export default class NextEvent extends React.Component {
+    state = {
+        CountDownInEvent: false
+    }
 
     dateConvertFormat = (date) => {
         return date.split('-').reverse().join('/');
@@ -11,13 +14,17 @@ export default class NextEvent extends React.Component {
         return time.slice(0, 5);
     }
 
+    changeState = (bool) => {
+        this.setState({CountDownInEvent: bool});
+    }
+
     renderMainInfo = (newEvent) => {
         if(newEvent !== undefined){
             return (
                 <div className="col-lg-7 mt-3 ">
                     <div className="card text-center bg-dark rounded-0 ">
                     <div className="card-header text-warning">
-                            <h3>Prochain évent</h3>
+                            <h3>{(this.state.CountDownInEvent) ? "Event actuel ": "Prochain évent"}</h3>
                         </div>
                         <div className="card-body">
                             <h2 className="card-title text-warning mb-4">
@@ -48,11 +55,11 @@ export default class NextEvent extends React.Component {
                 <div className="col-lg-5 align-self-stretch mt-3">
                     <div className="card text-center bg-dark rounded-0 ">
                         <div className="card-header text-warning">
-                            <h3>Temps restant avant le prochain évent</h3>
+                            <h3>{(this.state.CountDownInEvent) ? <span className="red">Event en cours</span> :"Temps restant avant le prochain évent"}</h3>
                         </div>
                         <div className="card-body">
                             <h2 className="card-title">
-                                <CountDown event = {newEvent} deleteEvent={this.props.deleteEvent}/>
+                                <CountDown event = {newEvent} deleteEvent={this.props.deleteEvent} changeState={this.changeState}/>
                             </h2>
                         </div>
                     </div>

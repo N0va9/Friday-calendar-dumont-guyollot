@@ -8,7 +8,7 @@ export default class CountDown extends React.Component {
         hours : undefined,
         minutes : undefined,
         seconds : undefined,
-        oldEvent : undefined 
+        oldEvent : undefined
     }
 
     setEvent = (date, tab) => {
@@ -31,23 +31,43 @@ export default class CountDown extends React.Component {
         return this.setEvent(eventDate, eventDateTime);
     }
 
+
+    setTimer = (then, now) => {
+        const days = then.diff(now, 'days');
+        const hours = then.diff(now, 'hours') % 24;
+        const minutes = then.diff(now, 'minutes') % 60;
+        const seconds = then.diff(now, 'seconds') % 60;
+
+        this.setState({days, hours, minutes, seconds});
+        if(this.state.oldEvent !== this.props.event){
+            this.setState({oldEvent: this.props.event});
+        }
+    }
+
     startTimer = () => {
         this.interval = setInterval(() => {
             const then = Moment(this.eventToDateStart(this.props.event));
             const now = Moment();
-
-            const days = then.diff(now, 'days');
-            const hours = then.diff(now, 'hours') % 24;
-            const minutes = then.diff(now, 'minutes') % 60;
-            const seconds = then.diff(now, 'seconds') % 60;
-
-            console.log("test");
-
-            this.setState({days, hours, minutes, seconds});
-            if(this.state.oldEvent !== this.props.event){
-                this.setState({oldEvent: this.props.event});
-            }
+            
+            this.setTimer(then, now);
+            this.props.changeState(false);
         }, 1000); 
+    }
+
+    startTimerEnd = () => {
+        this.interval = setInterval(() => {
+            const then = Moment(this.eventToDateEnd(this.props.event));
+            const now = Moment();
+
+            this.setTimer(then, now);
+            this.props.changeState(true);
+        }, 1000); 
+    }
+
+    
+    InEvent = () => {
+        let event = this.props.event;
+        return (this.eventToDateStart(event).valueOf() < (new Date()).valueOf() && (new Date()).valueOf() < this.eventToDateEnd(event).valueOf());
     }
 
     startDeleteTimer = () => {
@@ -68,15 +88,21 @@ export default class CountDown extends React.Component {
         }
     }
 
+
     componentDidUpdate = () =>{
         if (this.state.days <= 0 && this.state.hours <= 0 && this.state.minutes <= 0 && this.state.seconds <= 0)  {
             clearInterval(this.interval);
+            if(this.InEvent){
+                this.startTimerEnd();
+            }
             if(this.state.oldEvent !== this.props.event && this.state.oldEvent !== undefined){
+                clearInterval(this.interval);
                 this.startTimer();
                 this.startDeleteTimer();
             }
         }
     }
+
 
     componentWillUnmount = () => {
         if(this.interval) clearInterval(this.interval);
