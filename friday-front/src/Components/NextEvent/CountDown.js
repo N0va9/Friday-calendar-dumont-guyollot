@@ -41,7 +41,7 @@ export default class CountDown extends React.Component {
 
         this.setState({days, hours, minutes, seconds});
         if(this.state.oldEvent !== this.props.event){
-            this.setState({oldEvent: this.props.event});
+            this.setState({oldEvent: this.props.event});   
         }
     }
 
@@ -86,6 +86,15 @@ export default class CountDown extends React.Component {
         if(eventStart.valueOf() > new Date().valueOf()){
             this.startTimer();
             this.startDeleteTimer();
+            
+        }
+    }
+
+    changeNextevent = () => {
+        if(this.state.oldEvent !== this.props.event && this.state.oldEvent !== undefined){
+            clearInterval(this.interval);
+            this.startTimer();
+            this.startDeleteTimer();
         }
     }
 
@@ -96,12 +105,9 @@ export default class CountDown extends React.Component {
             if(this.InEvent){
                 this.startTimerEnd();
             } 
-            if(this.state.oldEvent !== this.props.event && this.state.oldEvent !== undefined){
-                clearInterval(this.interval);
-                this.startTimer();
-                this.startDeleteTimer();
-            }
+            this.changeNextevent();
         }
+        this.changeNextevent();
     }
 
 
